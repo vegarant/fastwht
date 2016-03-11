@@ -29,7 +29,6 @@ unsigned int idx_from_ordinary_to_sequency(unsigned int a, unsigned int N);
 
 
 
-inline unsigned int powDyadic(const unsigned int k); 
 
 
 /*
@@ -362,7 +361,7 @@ template void hadamardOrdinary<>(std::complex<double>* x, unsigned int N);
 Returns  2^k
 
 */
-inline unsigned int powDyadic(const unsigned int k) {
+unsigned int powDyadic(const unsigned int k) {
      
     unsigned int N = 1;
      

@@ -38,16 +38,15 @@ bool test_sign_change_WAL( bool verbose=true);
 
 int main(int argc, char *argv[]) {
         
-    //test_sequency_sign_changes();
-    //test_sign_change_WAL();
+    test_sign_change_WAL();
     test_hadamardOrdinary_16();
     test_hadamardPaley_16();
     test_hadamardPaley_32();
     test_hadamard_sequency_sign_changes();
-    //test_reverseBitSequence(); 
-    //test_binaryToGrayCode();
-    //test_grayCodeToBinary();
-    //test_insertRowCol();
+    test_reverseBitSequence(); 
+    test_binaryToGrayCode();
+    test_grayCodeToBinary();
+    test_insertRowCol();
     
     
 }

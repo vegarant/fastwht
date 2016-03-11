@@ -29,8 +29,8 @@ For the file interfacing with python see python/hadamard.h
 #include <complex>
 #include <vector>
 
-unsigned int sequency(unsigned int a, unsigned int N);
 
+unsigned int powDyadic(const unsigned int k); 
 int findMostSignificantBit(unsigned int a);
 
 /*
