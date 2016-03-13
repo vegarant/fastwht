@@ -106,6 +106,12 @@ Had_ord16 = array([[1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  
 
 
 def test_correctness():
+    """
+    The correct Hadamard matrices have been hard coded into the source code. The 
+    fastwht reproduces all of these matrices, and computes the Frobenius norm of 
+    the difference between the constructed matrix and the hard coded matrix.    
+    If this norm is non-zero the test fails.  
+    """
     eps = 1e-8;
     
     for N in [8,16]:
@@ -126,23 +132,25 @@ def test_correctness():
             U_ord[:,i] = y_ord;
         
         if (N == 8):
-            zeroNorm_seq = linalg.norm(Had_seq8 - U_seq*N);
-            zeroNorm_pal = linalg.norm(Had_pal8 - U_pal*N);
-            zeroNorm_ord = linalg.norm(Had_ord8 - U_ord*N);
+            zeroNorm_seq = linalg.norm(Had_seq8 - U_seq*N, 'fro');
+            zeroNorm_pal = linalg.norm(Had_pal8 - U_pal*N, 'fro');
+            zeroNorm_ord = linalg.norm(Had_ord8 - U_ord*N, 'fro');
             assert zeroNorm_seq < eps, "Wrong matrix N = 8" ;
             assert zeroNorm_pal < eps, "Wrong matrix N = 8" ;
             assert zeroNorm_ord < eps, "Wrong matrix N = 8" ;
         
         if (N == 16):
-            zeroNorm_seq = linalg.norm(Had_seq16 - U_seq*N);
-            zeroNorm_pal = linalg.norm(Had_pal16 - U_pal*N);
-            zeroNorm_ord = linalg.norm(Had_ord16 - U_ord*N);
+            zeroNorm_seq = linalg.norm(Had_seq16 - U_seq*N, 'fro');
+            zeroNorm_pal = linalg.norm(Had_pal16 - U_pal*N, 'fro');
+            zeroNorm_ord = linalg.norm(Had_ord16 - U_ord*N, 'fro');
             assert zeroNorm_seq < eps, "Wrong matrix N = 16" ;
             assert zeroNorm_pal < eps, "Wrong matrix N = 16" ;
             assert zeroNorm_ord < eps, "Wrong matrix N = 16" ;
 
 def test_zero_expansion():
-    
+    """
+    Various tests to verify that objects keep their shape and structure. 
+    """
     N = 16;
     eps = 1e-8;
     
@@ -181,7 +189,7 @@ def test_zero_expansion():
     success = False;
     try:
         fastwht(65);
-    except ValueError:
+    except TypeError:
         success = True;
     
     assert success, "Did accept non-array or non-matrix argument";
@@ -190,7 +198,7 @@ def test_zero_expansion():
     try:
         x = zeros([N,N,N])
         fastwht(x);
-    except ValueError:
+    except TypeError:
         success = True;
     
     assert success, "Did accept more than 2-dimensional argument";
@@ -199,10 +207,53 @@ def test_zero_expansion():
     try:
         x = zeros([N,N])
         fastwht(x);
-    except ValueError:
+    except TypeError:
         success = True;
     
     assert success, "Did accept more than 2-dimensional argument";
+    
+    N = 32;
+    x = matrix(zeros(N));
+    y = fastwht(x);
+    assert isinstance(y, matrix), "No longer a matrix object";
+    
+    
+
+def test_complex_numbers():
+    
+    N = 16;
+    eps = 1e-10;
+    
+    x = zeros(N, dtype=complex128);
+    for i in range(N):
+        x[i] = i;
+    x[3] = -4;
+    x[7] = 20;
+    
+    x_copy = x.copy();
+    y = fastwht(x);
+    
+    assert y.dtype == complex128, "Converted complex array into real"
+    assert linalg.norm(y.imag) < eps, "Nonzero imaginary norm"
+    assert linalg.norm(x - x_copy) < eps, "x has been changed"
+    
+    x = x - 1j*x;
+    
+    y = fastwht(x);
+    
+    assert linalg.norm(y.real + y.imag) < eps, "The two arrays should cancel"
+    
+    
+    x = matrix(x);
+    y = fastwht(x);
+    
+    assert isinstance(y, matrix), "Is not a matrix"
+    assert y.shape[0] == x.shape[0] and y.shape[1] == x.shape[1], \
+                                                "The shape changed";
+    x.shape = (max(x.shape), min(x.shape));
+    y = fastwht(x);
+    assert y.shape[0] == x.shape[0] and y.shape[1] == x.shape[1], \
+                                                "The shape changed";
     
     
     
@@ -210,7 +261,7 @@ def test_zero_expansion():
 if __name__ == "__main__":
     test_zero_expansion();
     test_correctness(); 
-
+    test_complex_numbers();
 
 
 

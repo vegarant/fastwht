@@ -1,19 +1,26 @@
-# Fast Walsh Hadamard transform
+# Hadamard
 
-This doirectory contains a script that will create python 2 wrapper code to
-interface the C++ code in the above directory. The script require that SWIG is
-installed. 
+## Introduction
+
+Hadamard is a python 2 module for the *Walsh-Hadamard transform*. It preforms
+this transform in O(N log N) operations, using one of the tree orderings
+*sequency*, *hadamard* and *dyadic*. It does also provide functionality to 
+produce the values to the function *WAL* and *PAL*.   
+
 
 ## Installation
 
-1. To create the python wrapper function run the `setup.sh` file. This file use
-the command *python2* to run python 2. If your system run python 2 using the
-*python* command, you will need to change one line in the `setup.sh` file.
+The hadamard module imports its core modules from code written in C++. The 
+wrapper code used to interface python with C++ is auto generated using Swig. 
+and placed in the module *hadamardKernel*. The Hadamard module import all its 
+functionality from this kernel module. 
 
-2. Run the file `test.py` to verify your implementation. 
+The easiest way to install this module is to download the precompiled binaries [Download](http://folk.uio.no/vegarant/fastwht_matlab.zip). If this fails, one 
+can try to compile it using the setup.sh script. 
 
-3. In order to make the python code callable from other directories add the
+In order to make the python code callable from other directories add the
 directory to your python path.
-```export PYTHONPATH=$PYTHONPATH:/path/to/directory/code/hadam/python```
+```export PYTHONPATH=$PYTHONPATH:/path/to/directory/code/fastwht/python```
+
 
 
