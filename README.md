@@ -3,7 +3,7 @@
 
 `fastwht()` is an in C++ implementation of the fast Walsh-Hadamard transform
 with bindings to Matlab and Python 2. The algorithm perform the transform
-in-place iteratively in $\mathcal{O}(N \log_{2} N)$ operations. Current version
+in-place iteratively in O( N log(N) ) operations. Current version
 are order of magnitude faster than Matlab's own implementation `fwht()`. As 
 Python's Numpy package does not implement this transform, no such comparison have 
 been made for the Python implementation. For an thought documentation of it's 
@@ -11,10 +11,10 @@ usage we refer to Matlab's own [documentation](http://se.mathworks.com/help/sign
 
 ### Matlab
 An test of performance can be seen in the image below. The test where performed 
-on an Lenovo ThinkPad T440s with Intel(R) Core(TM) i7-4600U CPU, and 8 GB of RAM 
-using the Arch Linux operating system. The time measurements where used using 
-Matlab's `timeit` function.
-![alt text][matlab/compare_performance.png]
+on an Lenovo ThinkPad T440s with Intel(R) Core(TM) i7-4600U CPU and 8 GB of RAM. The computer where 
+using the operating system Arch Linux. The time measurements where performed using 
+Matlab's `timeit()` function.
+![alt text](matlab/compare_performance.png =200x150)
 
 ### Python
 This function does currently only support arrays of type `numpy.float64`. It will 
@@ -28,8 +28,8 @@ You may either pull the required code directly from this
 repository and compile it yourself or you can download these precompiled binaries: 
 [Matlab](http://folk.uio.no/vegarant/fastwht_matlab.zip) and 
 [Python](http://folk.uio.no/vegarant/fastwht_python.zip).
-Remember to add the unzip files to you Python of Matlab path. The code have
-only been tested on an machine running Arch Linux.
+Remember to update your Python and Matlab path after you have complied the code. The current release have
+only been tested on one machine running Arch Linux.
 
 ## Current release
 
@@ -49,9 +49,3 @@ The project is published under GNU General Public License version 3.
 ## Contact 
 For any questions concerning the code please contact Vegard Antun at
 vegarant@student.matnat.uio.no
-
-
-
-
-
-
