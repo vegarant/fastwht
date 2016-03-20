@@ -1,12 +1,38 @@
-# Hadamard
+# Walsh-Hadamard Transform
 
 ## Introduction
 
 Hadamard is a python 2 module for the *Walsh-Hadamard transform*. It preforms
 this transform in O(N log N) operations, using one of the tree orderings
 *sequency*, *hadamard* and *dyadic*. It does also provide functionality to 
-produce the values to the function *WAL* and *PAL*.   
+produce the values to the functions *WAL* and *PAL*.   
 
+
+## Usage
+
+```
+>>> from hadamard import *
+>>> from numpy import *
+>>> 
+>>> R = 2**3
+>>> U = zeros([R,R])
+>>> 
+>>> for i in range(R):
+...     x = zeros(R) 
+...     x[i] = 1
+...     U[:,i] = fastwht(x);
+... 
+>>> print U*R
+[[ 1.  1.  1.  1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1. -1. -1. -1. -1.]
+ [ 1.  1. -1. -1. -1. -1.  1.  1.]
+ [ 1.  1. -1. -1.  1.  1. -1. -1.]
+ [ 1. -1. -1.  1.  1. -1. -1.  1.]
+ [ 1. -1. -1.  1. -1.  1.  1. -1.]
+ [ 1. -1.  1. -1. -1.  1. -1.  1.]
+ [ 1. -1.  1. -1.  1. -1.  1. -1.]]
+>>> 
+```
 
 ## Installation
 
@@ -20,7 +46,7 @@ can try to compile it using the setup.sh script.
 
 In order to make the python code callable from other directories add the
 directory to your python path.
-```export PYTHONPATH=$PYTHONPATH:/path/to/directory/code/fastwht/python```
+```export PYTHONPATH=$PYTHONPATH:/path/to/directory/fastwht/python```
 
 
 
