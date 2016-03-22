@@ -236,13 +236,13 @@ Perform the fast Walsh-Hadamard transform in sequency order.
 */
 template <typename T> 
 void hadamardSequency(T * x, unsigned int N) {
-    
+     
     if (N < 2) {
         return;    
     }
-
+     
     hadamardOrdinary<T>(x, N);
-    T y[N];
+    T *y = new T[N];
     unsigned int pos; 
      
     int dyadicPower = findMostSignificantBit(N) - 1;
@@ -251,9 +251,10 @@ void hadamardSequency(T * x, unsigned int N) {
         pos = idx_from_ordinary_to_sequency(i,dyadicPower);
         y[pos] = x[i];    
     }
-    
+     
     std::memcpy(x,y,N*sizeof(T));
-    
+    delete [] y;
+     
 }
 
 template void hadamardSequency<>(short * x, unsigned int N);
