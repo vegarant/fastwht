@@ -21,8 +21,8 @@ applications.
 
 */
 
-int PAL(unsigned int N, unsigned int n, unsigned int t);
-int WAL(unsigned int N, unsigned int n, unsigned int t); 
+int PAL_kernel(unsigned int N, unsigned int n, unsigned int t);
+int WAL_kernel(unsigned int N, unsigned int n, unsigned int t); 
 
 void fwhtKernelSequency(int n, double *arr);
 void fwhtKernelOrdinary(int n, double *arr);

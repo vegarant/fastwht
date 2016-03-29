@@ -30,7 +30,6 @@ unsigned int idx_from_ordinary_to_sequency(unsigned int a, unsigned int N);
 
 
 
-
 /*
 
 Computes the element in the sequency ordered Walsh-Hadamard matrix. 
@@ -121,6 +120,25 @@ int findMostSignificantBit(unsigned int a) {
 
 
 
+unsigned int reverseBit(const unsigned int N, const unsigned int x) {
+    
+    const unsigned int n = findMostSignificantBit(N) - 1;
+    
+    unsigned int out = 0; 
+    unsigned int ONE = 0x00000001;
+    
+    unsigned int ONE_rev = ONE << (n-1);
+    for (int i = 0; i < n; i++) {
+        if (x & ONE) {
+            out = out | ONE_rev;    
+        }
+        
+        ONE = ONE << 1;
+        ONE_rev = ONE_rev >> 1; 
+    }   
+    
+    return out;
+}
 
 
 /*
@@ -235,7 +253,7 @@ Perform the fast Walsh-Hadamard transform in sequency order.
 
 */
 template <typename T> 
-void hadamardSequency(T * x, unsigned int N) {
+void hadamardSequency(T * x, const unsigned int N) {
      
     if (N < 2) {
         return;    
@@ -257,14 +275,14 @@ void hadamardSequency(T * x, unsigned int N) {
      
 }
 
-template void hadamardSequency<>(short * x, unsigned int N);
-template void hadamardSequency<>(unsigned int * x, unsigned int N);
-template void hadamardSequency<>(int * x, unsigned int N);
-template void hadamardSequency<>(long * x, unsigned int N);
-template void hadamardSequency<>(float * x, unsigned int N);
-template void hadamardSequency<>(double * x, unsigned int N);
-template void hadamardSequency<>(long double * x, unsigned int N);
-template void hadamardSequency<>(std::complex<double>* x, unsigned int N);
+template void hadamardSequency<>(short * x, const unsigned int N);
+template void hadamardSequency<>(unsigned int * x, const unsigned int N);
+template void hadamardSequency<>(int * x, const unsigned int N);
+template void hadamardSequency<>(long * x, const unsigned int N);
+template void hadamardSequency<>(float * x, const unsigned int N);
+template void hadamardSequency<>(double * x, const unsigned int N);
+template void hadamardSequency<>(long double * x, const unsigned int N);
+template void hadamardSequency<>(std::complex<double>* x, const unsigned int N);
 
 
 /*
@@ -273,7 +291,7 @@ Perform the fast Walsh-Hadamard transform in Paley order.
 
 */
 template <typename T> 
-void hadamardPaley(T * x, unsigned int N) {
+void hadamardPaley(T * x, const unsigned int N) {
     
     if (N < 2) {
         return;    
@@ -285,7 +303,7 @@ void hadamardPaley(T * x, unsigned int N) {
     // Permute the vector such that all indices are changed with their 
     // bit-reversed version.
     for (unsigned int i = 1; i < N; i++) {
-        pos = reverseBitSequence(N, i);
+        pos = reverseBit(N, i);
         if (i < pos) { // swap elements
             tmpElement = x[pos];
             x[pos] = x[i];
@@ -297,13 +315,13 @@ void hadamardPaley(T * x, unsigned int N) {
      
 }
 
-template void hadamardPaley<>(short * x, unsigned int N);
-template void hadamardPaley<>(int * x, unsigned int N);
-template void hadamardPaley<>(long * x, unsigned int N);
-template void hadamardPaley<>(float * x, unsigned int N);
-template void hadamardPaley<>(double * x, unsigned int N);
-template void hadamardPaley<>(long double * x, unsigned int N);
-template void hadamardPaley<>(std::complex<double>* x, unsigned int N);
+template void hadamardPaley<>(short * x, const unsigned int N);
+template void hadamardPaley<>(int * x, const unsigned int N);
+template void hadamardPaley<>(long * x, const unsigned int N);
+template void hadamardPaley<>(float * x, const unsigned int N);
+template void hadamardPaley<>(double * x, const unsigned int N);
+template void hadamardPaley<>(long double * x, const unsigned int N);
+template void hadamardPaley<>(std::complex<double>* x, const unsigned int N);
 
 
 
@@ -315,7 +333,7 @@ The calculations happens in-place.
 
 */
 template <typename T>
-void hadamardOrdinary(T *x, unsigned int N) {
+void hadamardOrdinary(T *x, const unsigned int N) {
     
     int R = findMostSignificantBit(N) - 1; 
     unsigned int scale;
@@ -346,14 +364,14 @@ void hadamardOrdinary(T *x, unsigned int N) {
 }
 
 // Specialization
-template void hadamardOrdinary<>(unsigned int* x, unsigned int N);
-template void hadamardOrdinary<>(int* x, unsigned int N);
-template void hadamardOrdinary<>(short* x, unsigned int N);
-template void hadamardOrdinary<>(long* x, unsigned int N);
-template void hadamardOrdinary<>(float* x, unsigned int N);
-template void hadamardOrdinary<>(double* x, unsigned int N);
-template void hadamardOrdinary<>(long double* x, unsigned int N);
-template void hadamardOrdinary<>(std::complex<double>* x, unsigned int N);
+template void hadamardOrdinary<>(unsigned int* x, const unsigned int N);
+template void hadamardOrdinary<>(int* x, const unsigned int N);
+template void hadamardOrdinary<>(short* x, const unsigned int N);
+template void hadamardOrdinary<>(long* x, const unsigned int N);
+template void hadamardOrdinary<>(float* x, const unsigned int N);
+template void hadamardOrdinary<>(double* x, const unsigned int N);
+template void hadamardOrdinary<>(long double* x, const unsigned int N);
+template void hadamardOrdinary<>(std::complex<double>* x, const unsigned int N);
 
 
 
@@ -393,6 +411,11 @@ void fwhtKernelPaley(int n, double *arr) {
      hadamardPaley<double>(arr, n);    
 } 
 
+int PAL_kernel(unsigned int N, unsigned int n, unsigned int x) {
+    return PAL(N,n,x);
+}
 
-
+int WAL_kernel(unsigned int N, unsigned int n, unsigned int x) {
+    return WAL(N,n,x);
+}
 

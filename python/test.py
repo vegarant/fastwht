@@ -254,15 +254,31 @@ def test_complex_numbers():
     y = fastwht(x);
     assert y.shape[0] == x.shape[0] and y.shape[1] == x.shape[1], \
                                                 "The shape changed";
+
+def test_correctness_WAL_PAL():
+    eps = 1e-8;
     
+    N = 16;
+    U_PAL = zeros([N,N]);
+    U_WAL = zeros([N,N]);
+    for n in range(N):
+        for t in range(N):
+            U_PAL[n,t] = PAL(N, n, t);
+            U_WAL[n,t] = WAL(N, n, t);
     
-    
-    
+    zeroNorm_seq = linalg.norm(Had_seq16 - U_WAL, 'fro');
+    zeroNorm_pal = linalg.norm(Had_pal16 - U_PAL, 'fro');
+    assert zeroNorm_seq < eps, "Wrong matrix N = 16" ;
+    assert zeroNorm_pal < eps, "Wrong matrix N = 16" ;
+     
+     
+     
+     
 if __name__ == "__main__":
     test_zero_expansion();
     test_correctness(); 
     test_complex_numbers();
-
+    test_correctness_WAL_PAL();
 
 
 

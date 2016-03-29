@@ -19,7 +19,6 @@
 # Change the path of the mex compiler for this to work on most computers
 
 CC = /opt/matlab/opt/app-sync/matlab/bin/mex
-CFLAGS = -ggdb 
 
 OBJS   = hadamard.o 
 HFILES = ../hadamard.h 
@@ -28,7 +27,7 @@ HFILES = ../hadamard.h
 all: fastwht.mexa64 
 
 fastwht.mexa64: $(HFILES) $(OBJS) fastwht.cpp  Makefile
-	$(CC)   $(OBJS) fastwht.cpp 
+	$(CC)   $(OBJS) CFLAGS='-O3' fastwht.cpp 
 hadamard.o : ../hadamard.cpp  
-	$(CC) CFLAGS='-ggdb' -c ../hadamard.cpp 
+	$(CC) CFLAGS='-O3' -c ../hadamard.cpp 
 

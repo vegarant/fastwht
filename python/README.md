@@ -14,15 +14,15 @@ produce the values to the functions *WAL* and *PAL*.
 >>> from hadamard import *
 >>> from numpy import *
 >>> 
->>> R = 2**3
->>> U = zeros([R,R])
+>>> N = 2**3
+>>> U = zeros([N,N])
 >>> 
->>> for i in range(R):
-...     x = zeros(R) 
+>>> for i in range(N):
+...     x = zeros(N) 
 ...     x[i] = 1
 ...     U[:,i] = fastwht(x);
 ... 
->>> print U*R
+>>> print N*U
 [[ 1.  1.  1.  1.  1.  1.  1.  1.]
  [ 1.  1.  1.  1. -1. -1. -1. -1.]
  [ 1.  1. -1. -1. -1. -1.  1.  1.]
@@ -31,6 +31,28 @@ produce the values to the functions *WAL* and *PAL*.
  [ 1. -1. -1.  1. -1.  1.  1. -1.]
  [ 1. -1.  1. -1. -1.  1. -1.  1.]
  [ 1. -1.  1. -1.  1. -1.  1. -1.]]
+>>>
+>>> N = 4;
+>>> 
+>>> U_wal = zeros([N,N]);
+>>> U_pal = zeros([N,N]);
+>>> for n in range(N):
+...     for t in range(N):
+...         U_wal[n,t] = WAL(N, n, t);
+...         U_pal[n,t] = PAL(N, n, t);
+... 
+>>> # Sequency ordered Hadamard matrix of size 4
+... print U_wal;
+[[ 1.  1.  1.  1.]
+ [ 1.  1. -1. -1.]
+ [ 1. -1. -1.  1.]
+ [ 1. -1.  1. -1.]]
+>>> # Paley ordered Hadamard matrix of size 4
+... print U_pal;
+[[ 1.  1.  1.  1.]
+ [ 1.  1. -1. -1.]
+ [ 1. -1.  1. -1.]
+ [ 1. -1. -1.  1.]]
 >>> 
 ```
 

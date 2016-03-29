@@ -25,14 +25,14 @@ transform.
 
 
 
-from hadamardKernel import PAL, WAL, fwhtKernelSequency, fwhtKernelOrdinary, fwhtKernelPaley;
+from hadamardKernel import PAL_kernel, WAL_kernel, fwhtKernelSequency, fwhtKernelOrdinary, fwhtKernelPaley;
 
 import numpy as np
 
 
 def fastwht(x, N=0, order='sequency'):
     '''
-    fastwht - Preform the fast Walsh-Hadamard transform of the array or matrix `x`.
+    fastwht - Preform the fast Walsh-Hadamard transform on the array or matrix `x`.
     
     Input:
 
@@ -137,6 +137,63 @@ def fastwht(x, N=0, order='sequency'):
      
     return y;
     
+
+def WAL(N, n, t):
+    """
+    The sequency ordered Walsh-function. 
+     
+    INPUT:
+     
+    N - Dimension of the sequency ordered Hadamard matrix. Must be N = 2**r for 
+        some positive integer r 
+    n - Walsh-function number.
+    t - Input to the Walsh function.
+     
+    All inputs must be non-negative integers. This function is only defined for
+    0 <= n,t < N. As the n'th order Walsh-function's input is only defined for 
+    input in the interval [0,1). The function WAL(N,n,t) can be interpreted as
+    w_n(t/N).
+     
+    """
+     
+    if (not _is_power_of_2(N)) :
+        raise ValueError('N must equal 2**r for some positive integer r');
+    if (t < 0 or t > N):
+        raise ValueError("Illegal t-value: Must be in the interval 0 <= t < N");
+    if (n < 0 or n > N):
+        raise ValueError("Illegal n-value: Must be in the interval 0 <= n < N");
+     
+    return WAL_kernel(N, n, t);
+
+
+
+def PAL(N, n, t):
+    """
+    The Paley ordered Walsh-function. 
+     
+    INPUT:
+     
+    N - Dimension of the Paley ordered Hadamard matrix. Must be N = 2**r for 
+        some positive integer r 
+    n - Walsh-function number.
+    t - Input to the Walsh function.
+     
+    All inputs must be non-negative integers. This function is only defined for
+    0 <= n,t < N. As the n'th order Walsh-function's input is only defined for 
+    input in the interval [0,1). The function PAL(N,n,t) can be interpreted as
+    w_n(t/N).
+     
+    """
+     
+    if (not _is_power_of_2(N)) :
+        raise ValueError('N must equal 2**r for some positive integer r');
+    if (t < 0 or t > N):
+        raise ValueError("Illegal t-value: Must be in the interval 0 <= t < N");
+    if (n < 0 or n > N):
+        raise ValueError("Illegal n-value: Must be in the interval 0 <= n < N");
+     
+    return PAL_kernel(N, n, t);
+
 
 
 def _is_power_of_2(N):

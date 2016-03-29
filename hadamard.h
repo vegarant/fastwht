@@ -42,18 +42,19 @@ n - row number i.e., Walsh-Hadamard function ψ_n
 t - column i.e., the input ψ_n(t/N)
 
 */
-int WAL(unsigned int N, unsigned int n, unsigned int t);
+int WAL( unsigned int N, unsigned int n, unsigned int t);
 int PAL(unsigned int N, unsigned int n, unsigned int t);
 
 template <typename T>
-void hadamardOrdinary(T *x, unsigned int N);
+void hadamardOrdinary(T *x, const unsigned int N);
 
 template <typename T> 
-void hadamardSequency(T * x, unsigned int N);
+void hadamardSequency(T * x, const unsigned int N);
 
 template <typename T> 
-void hadamardPaley(T * x, unsigned int N);
+void hadamardPaley(T * x, const unsigned int N);
 
+unsigned int reverseBit(const unsigned int N, const unsigned int x);
 unsigned int reverseBitSequence(const unsigned int N, unsigned int x);
 
 unsigned int binaryToGrayCode( unsigned int x );
