@@ -120,7 +120,14 @@ int findMostSignificantBit(unsigned int a) {
 
 
 
-unsigned int reverseBit(const unsigned int N, const unsigned int x) {
+
+
+/*
+
+Reverses the bit sequence of x, assuming one is using R-bits with N = 2^R.  
+
+*/
+unsigned int reverseBitSequence(const unsigned int N, unsigned int x) {
     
     const unsigned int n = findMostSignificantBit(N) - 1;
     
@@ -136,43 +143,9 @@ unsigned int reverseBit(const unsigned int N, const unsigned int x) {
         ONE = ONE << 1;
         ONE_rev = ONE_rev >> 1; 
     }   
-    
+     
     return out;
-}
-
-
-/*
-
-Reverses the bit sequence of x, assuming one is using R-bits with N = 2^R.  
-
-*/
-unsigned int reverseBitSequence(const unsigned int N, unsigned int x) {
-    
-    const unsigned int dyadicPower = findMostSignificantBit(N) - 1;
-    
-    unsigned int out = 0; 
-    unsigned int ONE = 0x00000001;
-    
-    // Reverse the most significant bits 
-    for (unsigned int i = 0; i < dyadicPower/2 ; i++) {
-        
-        out = ((( ONE << (dyadicPower-1-i) ) & x) >> (dyadicPower-1-2*i) ) | out;
-    
-    }
-    
-    // Reverse the least significant bits
-    for (unsigned int i = 0; i < dyadicPower/2 ; i++) {
-        
-        out = (((ONE << i ) & x) << (dyadicPower-1-2*i) ) | out;
-        
-    }
-    
-    // If odd, keep the middle bit
-    if (dyadicPower  % 2) { // It dyadicPower is odd 
-        out = ((ONE << (dyadicPower/2)) & x) | out;
-    }
-
-    return out;
+     
 }
 
 
@@ -303,7 +276,7 @@ void hadamardPaley(T * x, const unsigned int N) {
     // Permute the vector such that all indices are changed with their 
     // bit-reversed version.
     for (unsigned int i = 1; i < N; i++) {
-        pos = reverseBit(N, i);
+        pos = reverseBitSequence(N, i);
         if (i < pos) { // swap elements
             tmpElement = x[pos];
             x[pos] = x[i];

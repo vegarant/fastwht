@@ -60,21 +60,21 @@ bool test_reverseBitSequence(bool verbose) {
     bool success = true;
     const char *result;
     
-    unsigned int y = reverseBit(N, x);
+    unsigned int y = reverseBitSequence(N, x);
     
     
     success = success and (y == 20);
     
     x = 24;
-    y = reverseBit(N, x);
+    y = reverseBitSequence(N, x);
     
     success = success and (y == 3);
     
     for (N = 128; N < 500; N = 2*N) {
         for(x = 0; x < N; x++) {
             
-            y = reverseBit(N, x);
-            y = reverseBit(N, y);
+            y = reverseBitSequence(N, x);
+            y = reverseBitSequence(N, y);
             
             success = success  and (x == y);
         }

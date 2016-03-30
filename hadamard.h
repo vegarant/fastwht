@@ -54,7 +54,6 @@ void hadamardSequency(T * x, const unsigned int N);
 template <typename T> 
 void hadamardPaley(T * x, const unsigned int N);
 
-unsigned int reverseBit(const unsigned int N, const unsigned int x);
 unsigned int reverseBitSequence(const unsigned int N, unsigned int x);
 
 unsigned int binaryToGrayCode( unsigned int x );
