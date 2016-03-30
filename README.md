@@ -28,20 +28,20 @@ You may either pull the required code directly from this
 repository and compile it yourself or you can download these precompiled binaries: 
 [Matlab](http://folk.uio.no/vegarant/fastwht_matlab.zip) and 
 [Python](http://folk.uio.no/vegarant/fastwht_python.zip).
-Remember to update your Python and Matlab path after you have complied the code. The current release have
-only been tested on one machine running Arch Linux.
+Remember to update your Python and Matlab path after you have complied the
+code. The current release have only been tested on one machine running Arch
+Linux.
 
 ## Current release
 
-The code is currently in a testing stage. All corner cases of the code have not
-yet been tested. In particular the Python implementation have not been
-thoroughly tested. 
+The code is currently working, and produce accurate results. A large set of test 
+functions have been made to verify the implementation. 
 
 ## Further releases
 
 In the next version of the code, the developer have planed to implement a more
 efficient bit reversal algorithm. A parallel version of the algorithm will also
-be considered. 
+be considered.
 
 ## License
 The project is published under GNU General Public License version 3.
