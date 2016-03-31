@@ -20,7 +20,7 @@ Matlab's `timeit()` function.
 The interface between C++ and Python 2 is auto generated using
 [Swig](http://www.swig.org) version 3.0.8. On top of this python interface,
 there have been built an extra layer of wrapper code, to support complex arrays
-and matrix objects. None of this auto generated code is submitted in this
+and matrix objects. None of swig's auto generated code is submitted in this
 repository. 
 
 ## Install
