@@ -6,7 +6,7 @@ with bindings to Matlab and Python 2. The algorithm perform the transform
 in-place iteratively in O( N log(N) ) operations. Current version
 are order of magnitude faster than Matlab's own implementation `fwht()`. As 
 Python's NumPy package does not implement this transform, no such comparison have 
-been made for the Python implementation. For an thought documentation of it's 
+been made for the Python implementation. For an thorought documentation of it's 
 usage we refer to Matlab's own [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).  
 
 ### Matlab
@@ -20,7 +20,7 @@ Matlab's `timeit()` function.
 The interface between C++ and Python 2 is auto generated using
 [Swig](http://www.swig.org) version 3.0.8. On top of this python interface,
 there have been built an extra layer of wrapper code, to support complex arrays
-and matrix objects. None of this auto generated code is submitted in this
+and matrix objects. None of swig's auto generated code is submitted in this
 repository. 
 
 ## Install
