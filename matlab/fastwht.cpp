@@ -44,9 +44,6 @@ enum Type {INT32, DOUBLE, COMPLEX};
 enum Order {ORDINARY, SEQUENCY, PALEY};
 
 
-static void fastwht(int  N, double *arr) {
-     hadamardOrdinary<double>(arr, N);    
-} 
 
 void mexFunction( int nlhs, mxArray *plhs[], 
 		  int nrhs, const mxArray *prhs[] )
@@ -63,7 +60,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     
     double input_N = 1;
     //int sizeOfDataType = 0;
-    size_t M,N; 
+    int M,N; 
     
     /* Check for proper number of arguments */
     if (nlhs > 1) {
@@ -80,7 +77,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
     M = mxGetM(X_IN); 
     N = mxGetN(X_IN);
     
-    if ( (MIN(M,N) != 1) ) {  //mxIsComplex(Y_IN) || 
+    if ( (MIN(M,N) != 1) ) { 
 	    mexErrMsgIdAndTxt( "MATLAB:fastwht:toManyDimensions",
                 "The vector can only be one dimensional"); 
     } 
@@ -89,13 +86,10 @@ void mexFunction( int nlhs, mxArray *plhs[],
     /* Test the input type */
     if ( mxIsDouble(X_IN) and not mxIsComplex(X_IN) ) {
         dataType = DOUBLE;
-    //    sizeOfDataType = sizeof(double);
     } else if ( mxIsComplex(X_IN) ) {
         dataType = COMPLEX;
-    //    sizeOfDataType = sizeof(std::complex<double>);
     } else if ( mxIsInt32(X_IN) ) {
         dataType = INT32;
-    //    sizeOfDataType = sizeof(int);
     } else {
 	    mexErrMsgIdAndTxt( "MATLAB:fastwht:unsupportedType",
                 "The vector must be of type int32, double or complex"); 
@@ -143,12 +137,12 @@ void mexFunction( int nlhs, mxArray *plhs[],
     
     
     if (nrhs == 3) {
-        /* input must be a string */
+        /* Input must be a string */
         if ( mxIsChar( ORDER_IN ) != 1) {
             mexErrMsgIdAndTxt( "MATLAB:fastwht:inputNotString",
                              "Input must be a string.");
         }
-        /* input must be a row vector */
+        /* Input must be a row vector */
         if (mxGetM( ORDER_IN )!=1) {
             mexErrMsgIdAndTxt( "MATLAB:fastwht:inputNotVector",
                              "Input must be a row vector.");
@@ -179,7 +173,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
         }
     }
      
-    /* create the output matrix */
+    /* Create the output matrix */
     size_t newVectorLength = MAX(M,N);
     const double newVectorLengthDouble = (double) newVectorLength;
     originalVectorLength = (originalVectorLength > newVectorLength) ? newVectorLength : originalVectorLength;
