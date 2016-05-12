@@ -34,10 +34,11 @@ bool test_hadamardOrdinary_16(bool verbose=true);
 bool test_hadamardPaley_16(bool verbose=true);
 bool test_hadamardPaley_32(bool verbose=true);
 bool test_sign_change_WAL( bool verbose=true);
-
+bool test_powDyadic( bool verbose=true);
 
 int main(int argc, char *argv[]) {
         
+    test_powDyadic();
     test_sign_change_WAL();
     test_hadamardOrdinary_16();
     test_hadamardPaley_16();
@@ -51,6 +52,24 @@ int main(int argc, char *argv[]) {
     
 }
 
+bool test_powDyadic( bool verbose) {
+     
+    bool success = true;
+    unsigned int n = 1;
+    for (unsigned int i = 0; i < 5; i++) {
+        
+        unsigned int p = powDyadic(i);
+        success = success and (p==n);
+        n *= 2;
+        
+    }
+    
+    if (verbose) {
+        const char * result = (success) ? "\e[32mPassed\e[0m" : "\e[31mFailed\e[0m"; 
+        std::cout << result <<  ": powDyadic" << std::endl; 
+    }
+    return success;
+}
 
 
 bool test_reverseBitSequence(bool verbose) {

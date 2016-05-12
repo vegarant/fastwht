@@ -192,7 +192,7 @@ unsigned int idx_from_ordinary_to_sequency(unsigned int a, unsigned int nu) {
     unsigned int value = 0;
     unsigned int k = 1;
     unsigned int l = 1 << (nu-1);
-    //printf("l: 0x%x\n", l);
+    
     bool keepOne = true;
     
     for ( unsigned int i = 0; i < nu; i++) {
@@ -354,14 +354,9 @@ Returns  2^k
 
 */
 unsigned int powDyadic(const unsigned int k) {
-     
-    unsigned int N = 1;
-     
-    for (unsigned int i = 0; i < k; i++) {
-        N *= 2;
-    }
-     
-    return N;   
+      
+    unsigned int x = 1;
+    return (x<<k);
      
 }
 
