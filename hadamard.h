@@ -30,9 +30,10 @@ For the file interfacing with python see python/hadamard.h
 #include <cmath>
 #include <complex>
 #include <vector>
+#include <cstdint>
 
-unsigned int powDyadic(const unsigned int k);
-int findMostSignificantBit(unsigned int a);
+uint32_t powDyadic(const uint32_t k);
+unsigned int findMostSignificantBit(uint32_t a);
 
 /*
 
@@ -43,21 +44,21 @@ n - row number i.e., Walsh-Hadamard function ψ_n
 t - column i.e., the input ψ_n(t/N)
 
 */
-int WAL( unsigned int N, unsigned int n, unsigned int t);
+int WAL(unsigned int N, unsigned int n, unsigned int t);
 int PAL(unsigned int N, unsigned int n, unsigned int t);
 
 template <typename T>
-void hadamardOrdinary(T *x, const unsigned int N);
+void hadamardOrdinary(T *x, const uint32_t N);
 
 template <typename T>
-void hadamardSequency(T * x, const unsigned int N);
+void hadamardSequency(T * x, const uint32_t N);
 
 template <typename T>
-void hadamardPaley(T * x, const unsigned int N);
+void hadamardPaley(T * x, const uint32_t N);
 
-unsigned int reverseBitSequence(const unsigned int N, unsigned int x);
+uint32_t reverseBitSequence(const uint32_t N, uint32_t x);
 
-unsigned int binaryToGrayCode( unsigned int x );
-unsigned int grayCodeToBinary(unsigned int x);
+uint32_t binaryToGrayCode(uint32_t x );
+uint32_t grayCodeToBinary(uint32_t x);
 
 #endif

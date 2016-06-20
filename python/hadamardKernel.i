@@ -7,7 +7,7 @@
 
 %include "numpy.i"
 %init %{
-import_array();
+    import_array();
 %}
 
 %apply (int DIM1, double* INPLACE_ARRAY1) {(int n, double *arr)};
