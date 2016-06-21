@@ -21,7 +21,7 @@ import multiprocessing
 SetOption('num_jobs', multiprocessing.cpu_count())
 SetOption('implicit_cache', 1);
 
-src_files = ["hadamard.cpp"];
+src_files = ["hadamard.cpp", "timer.cpp"];
 program1 = "main";
 program2 = "verification";
 
