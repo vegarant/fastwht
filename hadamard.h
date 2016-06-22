@@ -56,6 +56,15 @@ void hadamardSequency(T * x, const uint32_t N);
 template <typename T>
 void hadamardPaley(T * x, const uint32_t N);
 
+template <typename T>
+void hadamardRecursive(T *x, const unsigned int N);
+
+template <typename T>
+void hadamardDepthFirst(T *x, const unsigned int N);
+
+template <typename Type>
+void hadamardMatters(Type *f, const uint32_t ldn);
+
 uint32_t reverseBitSequence(const uint32_t N, uint32_t x);
 
 uint32_t binaryToGrayCode(uint32_t x );

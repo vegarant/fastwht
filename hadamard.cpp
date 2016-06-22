@@ -206,8 +206,8 @@ void hadamardSequency(T * x, const uint32_t N) {
     if (N < 2) {
         return;
     }
-
-    hadamardOrdinary<T>(x, N);
+    hadamardMatters<T>(x, N);
+    //hadamardOrdinary<T>(x, N);
     T *y = new T[N];
     uint32_t pos;
 
@@ -256,7 +256,8 @@ void hadamardPaley(T * x, const uint32_t N) {
         }
     }
 
-    hadamardOrdinary<T>(x, N);
+    hadamardMatters<T>(x, N);
+    //hadamardOrdinary<T>(x, N);
 }
 
 template void hadamardPaley<>(short * x, const uint32_t N);
@@ -269,7 +270,7 @@ template void hadamardPaley<>(std::complex<double>* x, const uint32_t N);
 
 /*
 
-Does the Walsh-Hadamard transform using the ordinary order.
+Performs the Walsh-Hadamard transform using the ordinary order.
 The calculations happens in-place.
 
 */
@@ -315,7 +316,7 @@ template void hadamardOrdinary<>(std::complex<double>* x, const uint32_t N);
 Returns  2^k
 
 */
-uint32_t powDyadic(const uint32_t k) {
+uint32_t powDyadic(const unsigned int k) {
     uint32_t x = 1;
     return (x<<k);
 }
@@ -344,4 +345,149 @@ int PAL_kernel(unsigned int N, unsigned int n, unsigned int x) {
 int WAL_kernel(unsigned int N, unsigned int n, unsigned int x) {
     return WAL(N,n,x);
 }
+
+
+///////////////////////////////////////////////////////////////////////////////
+///                        Functions under testing                          ///
+///////////////////////////////////////////////////////////////////////////////
+
+/*
+
+Performs the Walsh-Hadamard transform using the ordinary order.
+The calculations happens in-place.
+
+This formulation of the code is found in the book "Matters Computational" by 
+Jörg Arndt, Springer 2011. 
+
+*/
+template <typename T>
+void hadamardMatters(T *f, const uint32_t N) {
+
+    const uint32_t ldn = findMostSignificantBit(N) - 1;
+
+    for (uint32_t ldm=1; ldm<=ldn; ++ldm) {
+
+        const uint32_t m = (1 << ldm);         // 2^ldm
+        const uint32_t mh = (m >> 1);          // m/2
+        for (uint32_t r = 0; r < N; r += m) {
+
+            uint32_t t1 = r;
+            uint32_t t2 = r + mh;
+            for (uint32_t j = 0; j < mh; ++j, ++t1, ++t2) {
+
+                T u = f[t1];
+                T v = f[t2];
+                f[t1] = u + v;
+                f[t2] = u - v;
+            }
+        }
+    }
+}
+
+template void hadamardMatters<>(double *f, const uint32_t ldn);
+
+
+
+/*
+
+Recursive formulation provided Anders Matheson
+
+*/
+template <typename T>
+void hadamardRecursive(T *x, const unsigned int N) {
+    T elem1, elem2;
+    if(N == 2)
+    {
+        elem1 = x[0] + x[1];
+        elem2 = x[0] - x[1];
+
+        x[0] = elem1;
+        x[1] = elem2;
+        return;
+    }
+
+    hadamardRecursive(x, N/2);
+    hadamardRecursive(x + N/2, N/2);
+
+    for (unsigned i=0; i < N/2; i++) {
+        elem1 = x[i] + x[i + N/2];
+        elem2 = x[i] - x[i + N/2];
+
+        x[i] = elem1;
+        x[i + N/2] = elem2;
+    }
+}
+
+// Specialization
+template void hadamardRecursive<>(unsigned int* x, const unsigned int N);
+template void hadamardRecursive<>(int* x, const unsigned int N);
+template void hadamardRecursive<>(short* x, const unsigned int N);
+template void hadamardRecursive<>(long* x, const unsigned int N);
+template void hadamardRecursive<>(float* x, const unsigned int N);
+template void hadamardRecursive<>(double* x, const unsigned int N);
+template void hadamardRecursive<>(long double* x, const unsigned int N);
+template void hadamardRecursive<>(std::complex<double>* x, const unsigned int N);
+
+
+/*
+
+Iterative formulation provided by Anders Matheson
+
+*/
+template <typename T>
+void hadamardDepthFirst(T *x, const unsigned int N) {
+    T elem1, elem2;
+
+    unsigned stack = 0;
+    unsigned lN = 1;
+    int offset = 0;
+
+    do
+    {
+        // Recurse down the stack
+        stack *= lN/2;
+        lN = 2;
+
+        // Do inner case
+        elem1 = x[offset] + x[offset + 1];
+        elem2 = x[offset] - x[offset + 1];
+
+        x[offset] = elem1;
+        x[offset + 1] = elem2;
+
+        // Reduce back up again
+        while(stack & 1) {
+            offset -= lN;
+
+            for (unsigned i=offset; i != offset + lN; i++) {
+                elem1 = x[i] + x[i + lN];
+                elem2 = x[i] - x[i + lN];
+
+                x[i] = elem1;
+                x[i + lN] = elem2;
+            }
+
+            stack /= 2;
+            lN *= 2;
+        }
+
+        stack |= 1;
+        offset += lN;
+    }
+    while(lN != N);
+}
+
+template void hadamardDepthFirst<>(unsigned int* x, const unsigned int N);
+template void hadamardDepthFirst<>(int* x, const unsigned int N);
+template void hadamardDepthFirst<>(short* x, const unsigned int N);
+template void hadamardDepthFirst<>(long* x, const unsigned int N);
+template void hadamardDepthFirst<>(float* x, const unsigned int N);
+template void hadamardDepthFirst<>(double* x, const unsigned int N);
+template void hadamardDepthFirst<>(long double* x, const unsigned int N);
+template void hadamardDepthFirst<>(std::complex<double>* x, const unsigned int N);
+
+
+
+
+
 

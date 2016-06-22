@@ -15,18 +15,23 @@
 
 #include "python/hadamardKernel.h" // Python interface
 #include "hadamard.h"
+#include "timer.h"
+
+using duration = std::chrono::duration<double>;
 
 int main(int argc, char *argv[]) {
-    unsigned int N = 4;
-    int x[N];
-    int *y;
-    std::memset(x,0, N*sizeof(int));
-    x[2] = 1;
 
-    hadamardSequency<int>(x, N);
+    int nu = 23;
+    std::cout << "N = 2^" << nu << std::endl;
+    
+    const unsigned int N = powDyadic(nu);
 
-    for (int i = 0; i < N; i++) {
-        std::cout << x[i] << std::endl;
-    }
+    timeit("Sequency    ", 7, N, hadamardSequency<double>);
+    timeit("Paley       ", 7, N, hadamardPaley<double>);
+    timeit("Ordinary    ", 7, N, hadamardOrdinary<double>);
+    timeit("Recursive   ", 7, N, hadamardRecursive<double>);
+    timeit("Depth First ", 7, N, hadamardDepthFirst<double>);
+    timeit("Matters     ", 7, N, hadamardMatters<double>);
+
 }
 

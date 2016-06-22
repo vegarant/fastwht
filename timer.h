@@ -74,8 +74,5 @@ std::tuple<double, double, double, double> statistics(const std::vector<double> 
 void timeit( const char * name, const int runs, const uint32_t N, 
              void (*transform)(double*, const uint32_t));
 
-
-
 #endif
-
 
