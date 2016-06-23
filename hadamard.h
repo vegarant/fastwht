@@ -31,6 +31,8 @@ For the file interfacing with python see python/hadamard.h
 #include <complex>
 #include <vector>
 #include <cstdint>
+#include <thread>
+
 
 uint32_t powDyadic(const uint32_t k);
 unsigned int findMostSignificantBit(uint32_t a);
@@ -63,11 +65,21 @@ template <typename T>
 void hadamardDepthFirst(T *x, const unsigned int N);
 
 template <typename Type>
-void hadamardMatters(Type *f, const uint32_t ldn);
+void hadamardArndt(Type *f, const uint32_t ldn);
+
+template <typename T>
+void hadamardArndtOneStep(T *x, const uint32_t N, const uint32_t ldm );
+
+template <typename T>
+void hadamardParallel(T* x, const uint32_t N);
 
 uint32_t reverseBitSequence(const uint32_t N, uint32_t x);
 
 uint32_t binaryToGrayCode(uint32_t x );
 uint32_t grayCodeToBinary(uint32_t x);
+
+
+
+
 
 #endif

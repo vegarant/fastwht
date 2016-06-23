@@ -17,21 +17,26 @@
 #include "hadamard.h"
 #include "timer.h"
 
-using duration = std::chrono::duration<double>;
-
 int main(int argc, char *argv[]) {
 
-    int nu = 23;
+    int nu = 27;
     std::cout << "N = 2^" << nu << std::endl;
-    
-    const unsigned int N = powDyadic(nu);
 
-    timeit("Sequency    ", 7, N, hadamardSequency<double>);
-    timeit("Paley       ", 7, N, hadamardPaley<double>);
-    timeit("Ordinary    ", 7, N, hadamardOrdinary<double>);
-    timeit("Recursive   ", 7, N, hadamardRecursive<double>);
-    timeit("Depth First ", 7, N, hadamardDepthFirst<double>);
-    timeit("Matters     ", 7, N, hadamardMatters<double>);
+    const unsigned int N = powDyadic(nu);
+    
+    //std::vector<double> x(N,0);
+    
+    //hadamardParallel<double>(&x[0], N);
+    
+    //for(double d : x) std::cout <<  d << std::endl;
+
+    //timeit("Sequency    ", 7, N, hadamardSequency<double>);
+    //timeit("Paley       ", 7, N, hadamardPaley<double>);
+    //timeit("Ordinary    ", 7, N, hadamardOrdinary<double>);
+    //timeit("Recursive   ", 7, N, hadamardRecursive<double>);
+    //timeit("Depth First ", 7, N, hadamardDepthFirst<double>);
+    timeit("Arndt       ", 7, N, hadamardArndt<double>);
+    timeit("Parallel    ", 7, N, hadamardParallel<double>);
 
 }
 

@@ -203,17 +203,19 @@ Perform the fast Walsh-Hadamard transform in sequency order.
 */
 template <typename T>
 void hadamardSequency(T * x, const uint32_t N) {
-    if (N < 2) {
+    if (N < 2) 
+    {
         return;
     }
-    hadamardMatters<T>(x, N);
-    //hadamardOrdinary<T>(x, N);
+    
+    hadamardOrdinary<T>(x, N);
     T *y = new T[N];
     uint32_t pos;
 
     const int dyadicPower = findMostSignificantBit(N) - 1;
 
-    for ( uint32_t i = 0; i < N; i++ ) {
+    for ( uint32_t i = 0; i < N; i++ ) 
+    {
         pos = idx_from_ordinary_to_sequency(i,dyadicPower);
         y[pos] = x[i];
     }
@@ -223,7 +225,6 @@ void hadamardSequency(T * x, const uint32_t N) {
 }
 
 template void hadamardSequency<>(short * x, const uint32_t N);
-template void hadamardSequency<>(unsigned int * x, const uint32_t N);
 template void hadamardSequency<>(int * x, const uint32_t N);
 template void hadamardSequency<>(long * x, const uint32_t N);
 template void hadamardSequency<>(float * x, const uint32_t N);
@@ -238,7 +239,8 @@ Perform the fast Walsh-Hadamard transform in Paley order.
 */
 template <typename T>
 void hadamardPaley(T * x, const uint32_t N) {
-    if (N < 2) {
+    if (N < 2) 
+    {
         return;
     }
 
@@ -247,17 +249,18 @@ void hadamardPaley(T * x, const uint32_t N) {
 
     // Permute the vector such that all indices are changed with their
     // bit-reversed version.
-    for (uint32_t i = 1; i < N; i++) {
+    for (uint32_t i = 1; i < N; i++) 
+    {
         pos = reverseBitSequence(N, i);
-        if (i < pos) { // swap elements
+        if (i < pos) // swap elements 
+        { 
             tmpElement = x[pos];
             x[pos] = x[i];
             x[i] = tmpElement;
         }
     }
 
-    hadamardMatters<T>(x, N);
-    //hadamardOrdinary<T>(x, N);
+    hadamardOrdinary<T>(x, N);
 }
 
 template void hadamardPaley<>(short * x, const uint32_t N);
@@ -273,36 +276,25 @@ template void hadamardPaley<>(std::complex<double>* x, const uint32_t N);
 Performs the Walsh-Hadamard transform using the ordinary order.
 The calculations happens in-place.
 
+INPUT:
+x - The vector one would like to transform
+N - Length of the vector. N must be a power of 2.
+
 */
 template <typename T>
 void hadamardOrdinary(T *x, const uint32_t N) {
-    int R = findMostSignificantBit(N) - 1;
-    uint32_t scale;
-    uint32_t startIdx;
-    uint32_t scaleDiv2;
-    uint32_t startIdxPlussScaleDiv2;
-    T elem1;
-    T elem2;
-    for (uint32_t k = 1; k <= R; k++) {
-        scale = powDyadic(k);
-        for (uint32_t step = 0; step < N/scale; step++) {
-            startIdx = step*scale;
-            scaleDiv2 = scale/2;
-            startIdxPlussScaleDiv2 = startIdx + scaleDiv2;
 
-            for (uint32_t i=0; i < scaleDiv2; i++) {
-                elem1 = x[startIdx + i] + x[startIdxPlussScaleDiv2 + i];
-                elem2 = x[startIdx + i] - x[startIdxPlussScaleDiv2 + i];
-
-                x[startIdx + i] = elem1;
-                x[startIdxPlussScaleDiv2 + i] = elem2;
-            }
-        }
+    if (N > 65537) // N > 2^16 + 1
+    {
+        hadamardParallel<T>(x, N);
+    } 
+    else 
+    {
+        hadamardArndt<T>(x, N);
     }
 }
 
 // Specialization
-template void hadamardOrdinary<>(unsigned int* x, const uint32_t N);
 template void hadamardOrdinary<>(int* x, const uint32_t N);
 template void hadamardOrdinary<>(short* x, const uint32_t N);
 template void hadamardOrdinary<>(long* x, const uint32_t N);
@@ -348,46 +340,182 @@ int WAL_kernel(unsigned int N, unsigned int n, unsigned int x) {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-///                        Functions under testing                          ///
+///          Parallel version of the ordinary Hadamard transform            ///
 ///////////////////////////////////////////////////////////////////////////////
+
+/*
+
+Parallel version of the ordinary Hadamard transform.
+
+INPUT:
+x - The vector one would like to transform
+N - Length of the vector
+
+It is possible to use more 
+
+*/
+template <typename T>
+void hadamardParallel(T* x, const uint32_t N) {
+    
+    // Find the number of possible threads and choose the lower dyadic bound
+    const unsigned int numThreadSupported = std::thread::hardware_concurrency();
+
+    const unsigned int msb = findMostSignificantBit(numThreadSupported) - 1;
+    uint32_t numThreadUsed = powDyadic(msb);
+
+    // Compute the main part of the transform using all threads 
+    std::thread threadArray[numThreadUsed-1];
+
+    for (int i = 1; i < numThreadUsed; i++) 
+    {
+        threadArray[i-1] = std::thread(hadamardArndt<T>, 
+                                       &x[i*(N/numThreadUsed)], 
+                                       N/numThreadUsed);
+    }
+    
+    // Let the main thread do some work as well
+    hadamardArndt<T>(x, N/numThreadUsed);
+
+    for (int i = 0; i < numThreadUsed-1; i++) 
+    {
+        threadArray[i].join();
+    }
+    
+    // Gradually reduce the number of active treads
+    const unsigned int Nmsb = findMostSignificantBit(N)-1;
+
+    //uint32_t ldm = Nmsb-msb+1;
+    //while (ldm != Nmsb) 
+    //{
+
+    //    numThreadUsed /= 2;
+
+    //    for (int i = 0; i < numThreadUsed; i++) 
+    //    {
+    //        threadArray[i] = std::thread(hadamardArndtOneStep<T>, 
+    //                                     &x[i*(N/numThreadUsed)], 
+    //                                     N/numThreadUsed, ldm);
+    //    }
+
+    //    for (int i = 0; i < numThreadUsed; i++) 
+    //    {
+    //        threadArray[i].join();
+    //    }
+    //    
+    //    ldm++;
+    //}
+    
+    // For the final part of the transform we do all the work with one thread
+    for (uint32_t ldm=Nmsb-msb+1; ldm<=Nmsb; ++ldm) 
+    {
+        const uint32_t m = (1 << ldm);         // 2^ldm
+        const uint32_t mh = (m >> 1);          // m/2
+        for (uint32_t r = 0; r < N; r += m) 
+        {
+            uint32_t t1 = r;
+            uint32_t t2 = r + mh;
+            for (uint32_t j = 0; j < mh; ++j, ++t1, ++t2) 
+            {
+                T u = x[t1];
+                T v = x[t2];
+                x[t1] = u + v;
+                x[t2] = u - v;
+            }
+        }
+    }
+}
+
+template void hadamardParallel<>(short * x, const uint32_t N);
+template void hadamardParallel<>(int * x, const uint32_t N);
+template void hadamardParallel<>(long * x, const uint32_t N);
+template void hadamardParallel<>(float * x, const uint32_t N);
+template void hadamardParallel<>(double * x, const uint32_t N);
+template void hadamardParallel<>(long double * x, const uint32_t N);
+template void hadamardParallel<>(std::complex<double>* x, const uint32_t N);
+
+
 
 /*
 
 Performs the Walsh-Hadamard transform using the ordinary order.
 The calculations happens in-place.
 
-This formulation of the code is found in the book "Matters Computational" by 
+This formulation of the code is found in the book "Arndt Computational" by 
 Jörg Arndt, Springer 2011. 
 
 */
 template <typename T>
-void hadamardMatters(T *f, const uint32_t N) {
+void hadamardArndt(T *x, const uint32_t N) {
 
     const uint32_t ldn = findMostSignificantBit(N) - 1;
 
-    for (uint32_t ldm=1; ldm<=ldn; ++ldm) {
-
+    for (uint32_t ldm=1; ldm<=ldn; ++ldm) 
+    {
         const uint32_t m = (1 << ldm);         // 2^ldm
         const uint32_t mh = (m >> 1);          // m/2
-        for (uint32_t r = 0; r < N; r += m) {
-
+        for (uint32_t r = 0; r < N; r += m) 
+        {
             uint32_t t1 = r;
             uint32_t t2 = r + mh;
-            for (uint32_t j = 0; j < mh; ++j, ++t1, ++t2) {
-
-                T u = f[t1];
-                T v = f[t2];
-                f[t1] = u + v;
-                f[t2] = u - v;
+            for (uint32_t j = 0; j < mh; ++j, ++t1, ++t2) 
+            {
+                T u = x[t1];
+                T v = x[t2];
+                x[t1] = u + v;
+                x[t2] = u - v;
             }
         }
     }
 }
 
-template void hadamardMatters<>(double *f, const uint32_t ldn);
+template void hadamardArndt<>(short * x, const uint32_t N);
+template void hadamardArndt<>(int * x, const uint32_t N);
+template void hadamardArndt<>(long * x, const uint32_t N);
+template void hadamardArndt<>(float * x, const uint32_t N);
+template void hadamardArndt<>(double * x, const uint32_t N);
+template void hadamardArndt<>(long double * x, const uint32_t N);
+template void hadamardArndt<>(std::complex<double>* x, const uint32_t N);
 
 
+/*
 
+Preform one step in the outer loop of the HadamardArndt<T> function. It is 
+only used in the parallel version of the program. 
+
+*/
+template <typename T>
+void hadamardArndtOneStep(T *x, const uint32_t N, const uint32_t ldm ) {
+
+    const uint32_t ldn = findMostSignificantBit(N) - 1;
+
+    const uint32_t m = (1 << ldm);         // 2^ldm
+    const uint32_t mh = (m >> 1);          // m/2
+    for (uint32_t r = 0; r < N; r += m) 
+    {
+        uint32_t t1 = r;
+        uint32_t t2 = r + mh;
+        for (uint32_t j = 0; j < mh; ++j, ++t1, ++t2) 
+        {
+            T u = x[t1];
+            T v = x[t2];
+            x[t1] = u + v;
+            x[t2] = u - v;
+        }
+    }
+}
+
+template void hadamardArndtOneStep<>(short * x, const uint32_t N, const uint32_t ldm );
+template void hadamardArndtOneStep<>(int * x, const uint32_t N, const uint32_t ldm );
+template void hadamardArndtOneStep<>(long * x, const uint32_t N, const uint32_t ldm );
+template void hadamardArndtOneStep<>(float * x, const uint32_t N, const uint32_t ldm );
+template void hadamardArndtOneStep<>(double * x, const uint32_t N, const uint32_t ldm );
+template void hadamardArndtOneStep<>(long double * x, const uint32_t N, const uint32_t ldm );
+template void hadamardArndtOneStep<>(std::complex<double>* x, const uint32_t N, const uint32_t ldm );
+
+
+///////////////////////////////////////////////////////////////////////////////
+///                        Functions not in use                             ///
+///////////////////////////////////////////////////////////////////////////////
 /*
 
 Recursive formulation provided Anders Matheson
@@ -409,7 +537,8 @@ void hadamardRecursive(T *x, const unsigned int N) {
     hadamardRecursive(x, N/2);
     hadamardRecursive(x + N/2, N/2);
 
-    for (unsigned i=0; i < N/2; i++) {
+    for (unsigned i=0; i < N/2; i++) 
+    {
         elem1 = x[i] + x[i + N/2];
         elem2 = x[i] - x[i + N/2];
 
@@ -419,7 +548,6 @@ void hadamardRecursive(T *x, const unsigned int N) {
 }
 
 // Specialization
-template void hadamardRecursive<>(unsigned int* x, const unsigned int N);
 template void hadamardRecursive<>(int* x, const unsigned int N);
 template void hadamardRecursive<>(short* x, const unsigned int N);
 template void hadamardRecursive<>(long* x, const unsigned int N);
@@ -477,7 +605,6 @@ void hadamardDepthFirst(T *x, const unsigned int N) {
     while(lN != N);
 }
 
-template void hadamardDepthFirst<>(unsigned int* x, const unsigned int N);
 template void hadamardDepthFirst<>(int* x, const unsigned int N);
 template void hadamardDepthFirst<>(short* x, const unsigned int N);
 template void hadamardDepthFirst<>(long* x, const unsigned int N);

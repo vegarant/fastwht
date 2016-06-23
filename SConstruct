@@ -25,11 +25,13 @@ src_files = ["hadamard.cpp", "timer.cpp"];
 program1 = "main";
 program2 = "verification";
 
+
 env = Environment();
-env.Append(CXXFLAGS = ['-std=c++11', '-ggdb', '-fmax-errors=5']); #])
+env.Append(CPPFLAGS = ['-std=c++11', '-O3', '-fmax-errors=5']); #])
+env.Append(LINKFLAGS=["-pthread"]);
 
 env.Program(target = program1, source = [program1+".cpp"] + src_files);
-env.Program(target = program2, source = [program2+".cpp"] + src_files);
+env.Program(target = program2, source = [program2+".cpp"] + src_files); 
 
 
 # vim: set ft=python:
