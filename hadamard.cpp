@@ -23,7 +23,6 @@ This program in the computational core of the Walsh-Hadamard transform.
 #include "hadamard.h"
 #include "python/hadamardKernel.h"
 
-uint32_t idx_from_ordinary_to_sequency(uint32_t a, uint32_t N);
 
 /*
 
@@ -166,7 +165,7 @@ Find the new position of index 'a' in a hadamard matrix in a sequency ordered
 haramard matrix. 2^nu is the total number of entries in the hadamard matrix.
 
 */
-uint32_t idx_from_ordinary_to_sequency(uint32_t a, uint32_t nu) {
+uint32_t idxFromOrdinaryToSequency(uint32_t a, uint32_t nu) {
     uint32_t value = 0;
     uint32_t k = 1;
     uint32_t l = 1 << (nu-1);
@@ -216,7 +215,7 @@ void hadamardSequency(T * x, const uint32_t N) {
 
     for ( uint32_t i = 0; i < N; i++ ) 
     {
-        pos = idx_from_ordinary_to_sequency(i,dyadicPower);
+        pos = idxFromOrdinaryToSequency(i,dyadicPower);
         y[pos] = x[i];
     }
 
@@ -236,6 +235,9 @@ template void hadamardSequency<>(std::complex<double>* x, const uint32_t N);
 
 Perform the fast Walsh-Hadamard transform in Paley order.
 
+The bit-reversal permutation step of this algorithm is a copy of Øyvind Ryan's 
+code found at http://folk.uio.no/oyvindry/matinf2360/code/python/fft.py
+
 */
 template <typename T>
 void hadamardPaley(T * x, const uint32_t N) {
@@ -244,21 +246,36 @@ void hadamardPaley(T * x, const uint32_t N) {
         return;
     }
 
-    T tmpElement;
-    uint32_t pos;
+    T tmpElem = 0;
+    uint32_t j = 0;
 
-    // Permute the vector such that all indices are changed with their
-    // bit-reversed version.
-    for (uint32_t i = 1; i < N; i++) 
-    {
-        pos = reverseBitSequence(N, i);
-        if (i < pos) // swap elements 
-        { 
-            tmpElement = x[pos];
-            x[pos] = x[i];
-            x[i] = tmpElement;
+    for (int i = 0; i < N/2; i += 2) {
+        if (j > i) 
+        {
+            tmpElem = x[j];
+            x[j] = x[i];
+            x[i] = tmpElem;
+
+            tmpElem = x[N - j - 1];
+            x[N - j - 1] = x[N - i - 1];
+            x[N - i - 1] = tmpElem;
         }
-    }
+
+        tmpElem = x[i+1];
+        x[i+1] = x[j + N/2];
+        x[j + N/2] = tmpElem;
+
+        uint32_t m = N/4;
+
+        while (m >= 1 and j >= m)
+        {
+            j -= m;
+            m /= 2;
+        }
+
+        j += m;
+
+    }    
 
     hadamardOrdinary<T>(x, N);
 }

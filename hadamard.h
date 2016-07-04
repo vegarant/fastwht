@@ -75,6 +75,7 @@ void hadamardParallel(T* x, const uint32_t N);
 
 uint32_t reverseBitSequence(const uint32_t N, uint32_t x);
 
+uint32_t idxFromOrdinaryToSequency(uint32_t a, uint32_t N);
 uint32_t binaryToGrayCode(uint32_t x );
 uint32_t grayCodeToBinary(uint32_t x);
 
