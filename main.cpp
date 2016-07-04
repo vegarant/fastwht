@@ -16,27 +16,41 @@
 #include "python/hadamardKernel.h" // Python interface
 #include "hadamard.h"
 #include "timer.h"
+#include "cycles.h"
 
 int main(int argc, char *argv[]) {
 
-    int nu = 27;
-    std::cout << "N = 2^" << nu << std::endl;
+    int nu = 25;
 
-    const unsigned int N = powDyadic(nu);
-    
-    //std::vector<double> x(N,0);
-    
-    //hadamardParallel<double>(&x[0], N);
-    
-    //for(double d : x) std::cout <<  d << std::endl;
+    //for (int nu = 4; nu < nu_max; nu++) {
+    //    std::cout << "-------------------------------------------------------\n";
 
-    //timeit("Sequency    ", 7, N, hadamardSequency<double>);
-    //timeit("Paley       ", 7, N, hadamardPaley<double>);
-    //timeit("Ordinary    ", 7, N, hadamardOrdinary<double>);
-    //timeit("Recursive   ", 7, N, hadamardRecursive<double>);
-    //timeit("Depth First ", 7, N, hadamardDepthFirst<double>);
-    timeit("Arndt       ", 7, N, hadamardArndt<double>);
-    timeit("Parallel    ", 7, N, hadamardParallel<double>);
-
+        const unsigned int N = powDyadic(nu);
+        Timer t1;
+        t1.set_name("deque");
+        t1.start();
+        std::deque<uint32_t> leaders = detectCycleLeaders(N);
+        t1.stop();
+        std::cout << "nu: " << nu << ", #leaders: " << leaders.size() << std::endl;
+        //printCycleLeadersAndSize(leaders, N);
+    //}
 }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //timeit("Sequency    ", reps, N, hadamardSequency<double>);
+    //timeit("Paley       ", reps, N, hadamardPaley<double>);
+    //timeit("Ordinary    ", reps, N, hadamardOrdinary<double>);
+    //timeit("Recursive   ", reps, N, hadamardRecursive<double>);
+    //timeit("Depth First ", reps, N, hadamardDepthFirst<double>);
+    //timeit("Arndt       ", reps, N, hadamardArndt<double>);
+    //timeit("Parallel    ", reps, N, hadamardParallel<double>);

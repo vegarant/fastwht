@@ -21,13 +21,13 @@ import multiprocessing
 SetOption('num_jobs', multiprocessing.cpu_count())
 SetOption('implicit_cache', 1);
 
-src_files = ["hadamard.cpp", "timer.cpp"];
+src_files = ["hadamard.cpp", "timer.cpp", "cycles.cpp"];
 program1 = "main";
 program2 = "verification";
 
 
 env = Environment();
-env.Append(CPPFLAGS = ['-std=c++11', '-O3', '-fmax-errors=5']); #])
+env.Append(CPPFLAGS = ['-std=c++11', '-ggdb', '-fmax-errors=5']); #])
 env.Append(LINKFLAGS=["-pthread"]);
 
 env.Program(target = program1, source = [program1+".cpp"] + src_files);

@@ -17,7 +17,9 @@
 #include <iomanip>
 #include <cmath>
 #include "hadamard.h"
+#include "cycles.h"
 #include "Eigen/Dense"
+
 
 void insertRow(Eigen::MatrixXi & A, int *x, const int row );
 void insertCol(Eigen::MatrixXi & A, int *x, const int col );
