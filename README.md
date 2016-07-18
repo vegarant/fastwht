@@ -3,15 +3,15 @@
 
 `fastwht()` is an in C++ implementation of the fast Walsh-Hadamard transform
 with bindings to Matlab and Python 2. The algorithm perform the transform
-in-place iteratively in O( N log(N) ) operations. Current version
+in-place in O( N log(N) ) operations. Current version
 are order of magnitude faster than Matlab's own implementation `fwht()`. As
 Python's NumPy package does not implement this transform, no such comparison have
 been made for the Python implementation. For an thorought documentation of it's
 usage we refer to Matlab's own [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).
 
 ### Matlab
-An test of performance can be seen in the image below. The test where performed
-on an Lenovo ThinkPad T440s with Intel(R) Core(TM) i7-4600U CPU and 8 GB of RAM. The computer where
+A test of performance can be seen in the image below. The test where performed
+on an Lenovo ThinkPad T440s with Intel Core i7-4600U CPU and 8 GB of RAM. The computer where
 using the operating system Arch Linux. The time measurements where performed using
 Matlab's `timeit()` function.
 ![alt text](matlab/compare_performance.png =200x150)
@@ -31,11 +31,6 @@ repository and compile it yourself or you can download these precompiled binarie
 Remember to update your Python and Matlab path after you have complied the
 code. The current release have only been tested on one machine running Arch
 Linux.
-
-## Current release
-
-The code is currently working, and produce accurate results. A large set of test
-functions have been made to verify the implementation.
 
 ## Further releases
 
