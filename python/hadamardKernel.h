@@ -17,7 +17,6 @@
 #define FASTWHT_PYTHON_HADAMARDKERNEL_H_
 
 #include <complex>
-#include <cstdint>
 
 /*
 
