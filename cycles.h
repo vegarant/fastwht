@@ -1,6 +1,6 @@
 
 
-#ifndef FASTWHT_CUCLES_H_
+#ifndef FASTWHT_CYCLES_H_
 #define FASTWHT_CYCLES_H_
 
 #include <iostream>

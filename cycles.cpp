@@ -8,7 +8,7 @@ std::deque<uint32_t> detectCycleLeaders(const uint32_t N) {
 
     uint32_t idx = 1;
     elements[0] = 1;
-    while(idx = findIdxOfNextZero(elements)) {
+    while((idx = findIdxOfNextZero(elements))) {
         const uint32_t starter = idx;
         elements[idx] = 1;
         idx = idxFromOrdinaryToSequency(idx, nu);

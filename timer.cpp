@@ -35,8 +35,9 @@ transform - The transform function. The first argument to this function will be
             is the length of the transform.
 
 */
-void timeit( const char * name, const int runs, const uint32_t N, 
-                    void (*transform)(double*, const uint32_t)) {
+void timeit( const char * name, const int runs, const unsigned long N, 
+             void (*transform)(double*, const unsigned long))
+{
     // Create vector with random numbers
     std::vector<double> s(N);
 

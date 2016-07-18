@@ -71,8 +71,8 @@ class Timer {
 
 std::tuple<double, double, double, double> statistics(const std::vector<double> &val);
 
-void timeit( const char * name, const int runs, const uint32_t N, 
-             void (*transform)(double*, const uint32_t));
+void timeit( const char * name, const int runs, const unsigned long N, 
+             void (*transform)(double*, const unsigned long));
 
 #endif
 

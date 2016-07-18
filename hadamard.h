@@ -30,57 +30,44 @@ For the file interfacing with python see python/hadamard.h
 #include <cmath>
 #include <complex>
 #include <vector>
-#include <cstdint>
-#include <thread>
+#include <list>
+#include <stdint.h>
+//#include <thread>
 
+enum HadamardOrder {ORDINARY, PALEY, SEQUENCY};
 
-uint32_t powDyadic(const uint32_t k);
-unsigned int findMostSignificantBit(uint32_t a);
+template <typename T>
+void hadamardTransform(T* x, const unsigned long N, const HadamardOrder order);
 
-/*
+template<typename T> 
+void hadamardTransform2d(T* x, const unsigned long M , 
+                               const unsigned long N, 
+                               const HadamardOrder order); 
 
-Computes the element in the sequency ordered Walsh-Hadamard matrix.
-
-N - Dimension of the matrix N × N
-n - row number i.e., Walsh-Hadamard function ψ_n
-t - column i.e., the input ψ_n(t/N)
-
-*/
+template<typename T> 
+void hadamardTransform2dColumn(T* x, const unsigned long M , 
+                                     const unsigned long N, 
+                                     const HadamardOrder order);
 int WAL(unsigned int N, unsigned int n, unsigned int t);
 int PAL(unsigned int N, unsigned int n, unsigned int t);
 
 template <typename T>
-void hadamardOrdinary(T *x, const uint32_t N);
+void hadamardOrdinary(T *x, const unsigned long N);
 
 template <typename T>
-void hadamardSequency(T * x, const uint32_t N);
+void hadamardSequency(T * x, const unsigned long N);
 
 template <typename T>
-void hadamardPaley(T * x, const uint32_t N);
+void hadamardPaley(T * x, const unsigned long N);
 
-template <typename T>
-void hadamardRecursive(T *x, const unsigned int N);
+/*
 
-template <typename T>
-void hadamardDepthFirst(T *x, const unsigned int N);
+Returns  2^k
 
-template <typename Type>
-void hadamardArndt(Type *f, const uint32_t ldn);
-
-template <typename T>
-void hadamardArndtOneStep(T *x, const uint32_t N, const uint32_t ldm );
-
-template <typename T>
-void hadamardParallel(T* x, const uint32_t N);
-
-uint32_t reverseBitSequence(const uint32_t N, uint32_t x);
-
-uint32_t idxFromOrdinaryToSequency(uint32_t a, uint32_t N);
-uint32_t binaryToGrayCode(uint32_t x );
-uint32_t grayCodeToBinary(uint32_t x);
-
-
-
-
+*/
+inline unsigned long powDyadic(const unsigned long k) {
+    return (1UL<<k);
+}
 
 #endif
+

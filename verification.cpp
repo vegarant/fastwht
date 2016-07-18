@@ -18,17 +18,18 @@
 #include <cmath>
 #include "hadamard.h"
 #include "cycles.h"
+#include "walsh/walshseq.h"
+#include "walsh/walshpal.h"
 #include "Eigen/Dense"
 
 
 void insertRow(Eigen::MatrixXi & A, int *x, const int row );
 void insertCol(Eigen::MatrixXi & A, int *x, const int col );
+Eigen::MatrixXi createMatrix(const unsigned int N, 
+                             void (*transform)(int *, const uint32_t));
 
 // Test of support functions
 bool test_insertRowCol(bool verbose=true);
-bool test_reverseBitSequence(bool verbose=true) ;
-bool test_binaryToGrayCode(bool verbose=true);
-bool test_grayCodeToBinary(bool verbose=true) ;
 
 // Test of transforms
 bool test_hadamard_sequency_sign_changes(bool verbose=true);
@@ -39,23 +40,23 @@ bool test_sign_change_WAL( bool verbose=true);
 bool test_powDyadic( bool verbose=true);
 
 int main(int argc, char *argv[]) {
+    
+    const unsigned long nu = 3;
+    const unsigned long N = powDyadic(nu);
+    
     test_powDyadic();
-    test_sign_change_WAL();
+    //test_sign_change_WAL();
     test_hadamardOrdinary_16();
     test_hadamardPaley_16();
     test_hadamardPaley_32();
     test_hadamard_sequency_sign_changes();
-    test_reverseBitSequence();
-    test_binaryToGrayCode();
-    test_grayCodeToBinary();
-    test_insertRowCol();
 }
 
 bool test_powDyadic( bool verbose) {
     bool success = true;
-    unsigned int n = 1;
-    for (unsigned int i = 0; i < 5; i++) {
-        unsigned int p = powDyadic(i);
+    unsigned long n = 1;
+    for (unsigned long i = 0; i < 5; i++) {
+        unsigned long p = powDyadic(i);
         success = success and (p==n);
         n *= 2;
     }
@@ -66,94 +67,6 @@ bool test_powDyadic( bool verbose) {
     }
     return success;
 }
-
-bool test_reverseBitSequence(bool verbose) {
-    unsigned int N = 32;
-    unsigned int x = 5;
-    bool success = true;
-    const char *result;
-
-    unsigned int y = reverseBitSequence(N, x);
-
-    success = success and (y == 20);
-
-    x = 24;
-    y = reverseBitSequence(N, x);
-
-    success = success and (y == 3);
-
-    for (N = 128; N < 500; N = 2*N) {
-        for(x = 0; x < N; x++) {
-            y = reverseBitSequence(N, x);
-            y = reverseBitSequence(N, y);
-
-            success = success  and (x == y);
-        }
-    }
-
-    if (verbose) {
-        result = (success) ? "\e[32mPassed\e[0m" : "\e[31mFailed\e[0m";
-        std::cout << result <<  ": reverseBitSequence " << std::endl;
-    }
-}
-
-bool test_grayCodeToBinary(bool verbose) {
-    unsigned int N = 32;
-    unsigned int x = 5;
-    bool success = true;
-    const char *result;
-
-    success = success and (grayCodeToBinary(1 )  == 1 );
-    success = success and (grayCodeToBinary(3 )  == 2 );
-    success = success and (grayCodeToBinary(2 )  == 3 );
-    success = success and (grayCodeToBinary(6 )  == 4 );
-    success = success and (grayCodeToBinary(7 )  == 5 );
-    success = success and (grayCodeToBinary(5 )  == 6 );
-    success = success and (grayCodeToBinary(4 )  == 7 );
-    success = success and (grayCodeToBinary(12)  == 8 );
-    success = success and (grayCodeToBinary(13)  == 9 );
-    success = success and (grayCodeToBinary(15)  == 10);
-    success = success and (grayCodeToBinary(14)  == 11);
-    success = success and (grayCodeToBinary(10)  == 12);
-    success = success and (grayCodeToBinary(11)  == 13);
-    success = success and (grayCodeToBinary(9 )  == 14);
-    success = success and (grayCodeToBinary(8 )  == 15);
-
-    if (verbose) {
-        result = (success) ? "\e[32mPassed\e[0m" : "\e[31mFailed\e[0m";
-        std::cout << result <<  ": grayCodeToBinary " << std::endl;
-    }
-}
-
-
-bool test_binaryToGrayCode(bool verbose) {
-    unsigned int N = 32;
-    unsigned int x = 5;
-    bool success = true;
-    const char *result;
-
-    success = success and (binaryToGrayCode(1)  == 1);
-    success = success and (binaryToGrayCode(2)  == 3);
-    success = success and (binaryToGrayCode(3)  == 2);
-    success = success and (binaryToGrayCode(4)  == 6);
-    success = success and (binaryToGrayCode(5)  == 7);
-    success = success and (binaryToGrayCode(6)  == 5);
-    success = success and (binaryToGrayCode(7)  == 4);
-    success = success and (binaryToGrayCode(8)  == 12);
-    success = success and (binaryToGrayCode(9)  == 13);
-    success = success and (binaryToGrayCode(10) == 15);
-    success = success and (binaryToGrayCode(11) == 14);
-    success = success and (binaryToGrayCode(12) == 10);
-    success = success and (binaryToGrayCode(13) == 11);
-    success = success and (binaryToGrayCode(14) == 9);
-    success = success and (binaryToGrayCode(15) == 8);
-
-    if (verbose) {
-        result = (success) ? "\e[32mPassed\e[0m" : "\e[31mFailed\e[0m";
-        std::cout << result <<  ": binaryToGrayCode " << std::endl;
-    }
-}
-
 
 bool test_sign_change_WAL( bool verbose) {
     const char *result;
@@ -216,6 +129,26 @@ bool test_sign_change_WAL( bool verbose) {
 
     return success;
 }
+
+
+Eigen::MatrixXi createMatrix(const unsigned int N, 
+                             void (*transform)(int *, const uint32_t)) 
+{
+        Eigen::MatrixXi A = Eigen::MatrixXi::Zero(N,N);
+
+        int *x = new int [N];
+        for (int i = 0; i < N; i++) {
+            std::memset(x, 0, sizeof(int)*N);
+
+            x[i] = 1;
+            transform(x, N);
+            insertCol(A, x, i);
+        }
+        
+        delete [] x;
+        return A;
+}
+
 
 /*
 

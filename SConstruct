@@ -17,21 +17,33 @@
 import os
 import multiprocessing
 
+cc = "g++";
+cppFlags = ["-std=c++11", '-O3'];
 
 SetOption('num_jobs', multiprocessing.cpu_count())
 SetOption('implicit_cache', 1);
 
-src_files = ["hadamard.cpp", "timer.cpp", "cycles.cpp"];
+src_files = ["hadamard.cpp", "timer.cpp"];
 program1 = "main";
 program2 = "verification";
 
+if (cc == "g++"):
+    cppFlags.append("-fmax-errors=5");
+elif (cc == "clang++"):
+    cppFlags.append("-ferror-limit=5");
+    
 
-env = Environment();
-env.Append(CPPFLAGS = ['-std=c++11', '-ggdb', '-fmax-errors=5']); #])
+
+env = Environment(CXX = cc);
+#env.Append(CPPFLAGS = ['-std=c++11', '-O3', '-fmax-errors=5']); # gcc flags
+env.Append(CPPFLAGS = cppFlags); # clang flags
+env.Append(CPPPATH="fxt/");
 env.Append(LINKFLAGS=["-pthread"]);
 
 env.Program(target = program1, source = [program1+".cpp"] + src_files);
 env.Program(target = program2, source = [program2+".cpp"] + src_files); 
+
+
 
 
 # vim: set ft=python:

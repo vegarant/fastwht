@@ -16,24 +16,43 @@
 #include "python/hadamardKernel.h" // Python interface
 #include "hadamard.h"
 #include "timer.h"
-#include "cycles.h"
 
 int main(int argc, char *argv[]) {
 
-    int nu = 25;
+    const unsigned long nu = 26;
+    const unsigned long N = powDyadic(nu);
+    const unsigned long M = powDyadic(nu);
+    const unsigned long MN = M*N;
+    int reps = 5;
+    
+    timeit("Sequency      ", reps, N, hadamardSequency<double>);
+    timeit("Paley         ", reps, N, hadamardPaley<double>);
+    timeit("Ordinary      ", reps, N, hadamardOrdinary<double>);
 
-    //for (int nu = 4; nu < nu_max; nu++) {
-    //    std::cout << "-------------------------------------------------------\n";
-
-        const unsigned int N = powDyadic(nu);
-        Timer t1;
-        t1.set_name("deque");
-        t1.start();
-        std::deque<uint32_t> leaders = detectCycleLeaders(N);
-        t1.stop();
-        std::cout << "nu: " << nu << ", #leaders: " << leaders.size() << std::endl;
-        //printCycleLeadersAndSize(leaders, N);
+    //double *x = new double[MN];
+    //double *y = new double[MN];
+    //for (int i = 0; i < MN; i++) {
+    //    x[i] = i;
+    //    y[i] = i;
     //}
+    //
+    //x[4] = -30;
+    //y[4] = -30;
+    //x[3] = 50;
+    //y[3] = 50;
+
+
+    //hadamard2d<double>(x,N,M);
+    //hadamardTransform2d<double>(y,M,N, SEQUENCY);
+    //
+    //for (int i = 0; i < MN; i++) {
+    //    std::cout << x[i] - y[i] 
+    //    << ", x: " << std::setw(10) << std::left << x[i] 
+    //    << ", y: " << std::setw(10) << std::left << y[i] << std::endl;
+    //}
+    
+    
+
 }
 
     
