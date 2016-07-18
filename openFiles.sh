@@ -1,4 +1,4 @@
 #! /bin/sh
 
-gvim -p main.cpp verification.cpp hadamard.cpp hadamard.h timer.cpp timer.h benchmark.cpp 
+gvim -p main.cpp verification.cpp hadamard.cpp hadamard.h timer.cpp timer.h 
 
