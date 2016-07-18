@@ -19,7 +19,7 @@
 # Change the path of the mex compiler for this to work on most computers
 
 CC = mex
-CPPFLAG='-ggdb'
+CPPFLAG='-O3'
 
 fastwht.mexa64: ../hadamard.cpp ../hadamard.h fastwht.cpp  Makefile
 	$(CC) CFLAGS=CPPFLAG -I../fxt/ fastwht.cpp ../hadamard.cpp
