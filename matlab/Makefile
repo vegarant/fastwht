@@ -27,7 +27,7 @@ HFILES = ../hadamard.h
 all: fastwht.mexa64
 
 fastwht.mexa64: $(HFILES) $(OBJS) fastwht.cpp  Makefile
-	$(CC)   $(OBJS) CFLAGS='-O3' fastwht.cpp
+	$(CC)  $(OBJS) CFLAGS='-ggdb' -I../fxt/src/ fastwht.cpp
 hadamard.o : ../hadamard.cpp
-	$(CC) CFLAGS='-O3' -c ../hadamard.cpp
+	$(CC)  CFLAGS='-ggdb' -I../fxt/src/ -c ../hadamard.cpp
 
