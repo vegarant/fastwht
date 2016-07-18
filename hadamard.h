@@ -24,15 +24,14 @@ For the file interfacing with python see python/hadamard.h
 #ifndef FASTWHT_HADAMARD_H_
 #define FASTWHT_HADAMARD_H_
 
-#include <iostream>
-#include <iomanip>
-#include <cstring>
-#include <cmath>
 #include <complex>
-#include <vector>
-#include <list>
-#include <stdint.h>
-//#include <thread>
+
+// FXT
+#include "bits/bit2pow.h" // ld
+#include "walsh/walshseq.h" // walsh_seq2
+#include "perm/revbinpermute.h" // revbin_permute
+#include "walsh/walshwak.h" // walsh_wak
+#include "walsh/walshwal.h" // walsh_wal
 
 enum HadamardOrder {ORDINARY, PALEY, SEQUENCY};
 
@@ -48,8 +47,8 @@ template<typename T>
 void hadamardTransform2dColumn(T* x, const unsigned long M , 
                                      const unsigned long N, 
                                      const HadamardOrder order);
-int WAL(unsigned int N, unsigned int n, unsigned int t);
-int PAL(unsigned int N, unsigned int n, unsigned int t);
+int WAL(unsigned long N, unsigned long n, unsigned long t);
+int PAL(unsigned long N, unsigned long n, unsigned long t);
 
 template <typename T>
 void hadamardOrdinary(T *x, const unsigned long N);

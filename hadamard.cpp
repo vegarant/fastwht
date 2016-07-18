@@ -22,12 +22,6 @@ This file contain the interface to the computational core of the Hadamard transf
 #include "hadamard.h"
 #include "python/hadamardKernel.h"
 
-// FXT
-#include "bits/bit2pow.h" // ld
-#include "walsh/walshseq.h" // walsh_seq2
-#include "perm/revbinpermute.h" // revbin_permute
-#include "walsh/walshwak.h" // walsh_wal
-#include "walsh/walshwal.h"
 
 /*
     The Hadamard transform
@@ -160,17 +154,17 @@ n - row number i.e., Walsh-Hadamard function ψ_n
 t - column i.e., the input ψ_n(t/N)
 
 */
-int WAL(uint32_t N, uint32_t n, uint32_t t) 
+int WAL(unsigned long N, unsigned long n, unsigned long t) 
 {
-    const uint32_t ldn = ld(N);
-    uint32_t s = 0;
-    uint32_t n_pr = 0x00000001;
-    uint32_t t_r  = 0x00000001;
+    const unsigned long ldn = ld(N);
+    unsigned long s = 0;
+    unsigned long n_pr = 1;
+    unsigned long t_r  = 1;
     n_pr = n_pr << (ldn-1);
-    uint32_t n_r = 0;
-    uint32_t t_s = 0;
+    unsigned long n_r = 0;
+    unsigned long t_s = 0;
 
-    for (uint32_t r = 0; r < ldn; r++) 
+    for (unsigned long r = 0; r < ldn; r++) 
     {
         n_r = (((n_pr >> r) & n) >> (ldn - r-1));
         t_s = (((t_r << r) & t) >> r) - (((t_r << (r+1)) & t) >> (r+1));
@@ -193,15 +187,15 @@ n - row number i.e., Walsh-Hadamard function ψ_n
 t - column i.e., the input ψ_n(t/N)
 
 */
-int PAL(uint32_t N, uint32_t n, uint32_t x) 
+int PAL(unsigned long N, unsigned long n, unsigned long x) 
 {
     const int ldn = ld(N); 
-    uint32_t s = 0;
-    uint32_t ONE = 0x00000001;
-    uint32_t n_j = 0;
-    uint32_t x_jp1 = 0;
+    unsigned long s = 0;
+    unsigned long ONE = 1;
+    unsigned long n_j = 0;
+    unsigned long x_jp1 = 0;
 
-    for (uint32_t j = 0; j < ldn; j++) 
+    for (unsigned long j = 0; j < ldn; j++) 
     {
         n_j = (n & (ONE << j)) >> j ;
         x_jp1 = (x & (ONE << (ldn - j-1))) >> (ldn - j-1);

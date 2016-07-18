@@ -17,16 +17,16 @@
 % This program tests the performance of the different implementations.
 %
 
-n_start = 6;
-n_end   = 18;
+n_start = 10;
+fwht_end = 18;
+n_end   = 27;
 
-resolution = n_start:n_end;
 
 t_fwht = [];
 t_fastwht = [];
 t_fft = [];
 
-for k = resolution
+for k = n_start:fwht_end
 
     N = 2^k;
     x = randn(N,1);
@@ -45,17 +45,34 @@ for k = resolution
 
 end
 
+for k = fwht_end+1:n_end
+
+    N = 2^k;
+    x = randn(N,1);
+    
+    f2 = @() fastwht(x);
+    f3 = @() fft(x);
+
+    t2 = timeit(f2);
+    t3 = timeit(f3);
+
+    t_fastwht = [t_fastwht, t2];
+    t_fft = [t_fft, t3];
+
+end
+
 lwidth = 2;
 fsize  = 15;
 
 fig = figure();
 hold('on');
-plot(resolution, t_fwht(resolution-n_start+1), 'linewidth', lwidth );
-plot(resolution, t_fastwht(resolution-n_start+1), 'linewidth', lwidth );
-plot(resolution, t_fft(resolution-n_start+1), 'linewidth', lwidth );
+plot(n_start:fwht_end, t_fwht, 'linewidth', lwidth );
+plot(n_start:n_end, t_fastwht, 'linewidth', lwidth );
+plot(n_start:n_end, t_fft, 'linewidth', lwidth );
 legend({'fwht', 'fastwht', 'fft'}, 'fontsize', fsize, 'Location', 'northwest');
 xlabel('Length of vector 2^{R}', 'fontsize', fsize);
+ylabel('Time (seconds)', 'fontsize', fsize);
 set(gca,'yscale','log');
 
-%saveas(fig, 'compare_performance.png');
+saveas(fig, 'compare_performance.png');
 

@@ -38,7 +38,7 @@ env = Environment(CXX = cc);
 #env.Append(CPPFLAGS = ['-std=c++11', '-O3', '-fmax-errors=5']); # gcc flags
 env.Append(CPPFLAGS = cppFlags); # clang flags
 env.Append(CPPPATH="fxt/");
-env.Append(LINKFLAGS=["-pthread"]);
+#env.Append(LINKFLAGS=["-pthread"]);
 
 env.Program(target = program1, source = [program1+".cpp"] + src_files);
 env.Program(target = program2, source = [program2+".cpp"] + src_files); 

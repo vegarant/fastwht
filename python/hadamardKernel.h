@@ -16,8 +16,6 @@
 #ifndef FASTWHT_PYTHON_HADAMARDKERNEL_H_
 #define FASTWHT_PYTHON_HADAMARDKERNEL_H_
 
-#include <complex>
-
 /*
 
 This header file contains an interface to the code which is used from the python
