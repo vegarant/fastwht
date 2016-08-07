@@ -1,7 +1,7 @@
 # Fastwht
 ## A fast Walsh-Hadamard transform for Matlab and Python 2
 
-`fastwht()` is an in C++ implementation of the fast Walsh-Hadamard transform
+`fastwht()` is an C++ implementation of the fast Walsh-Hadamard transform
 with bindings to Matlab and Python 2. The algorithm perform the transform
 in-place in O( N log(N) ) operations. Current version
 are order of magnitude faster than Matlab's own implementation `fwht()`. As
@@ -31,12 +31,6 @@ repository and compile it yourself or you can download these precompiled binarie
 Remember to update your Python and Matlab path after you have complied the
 code. The current release have only been tested on one machine running Arch
 Linux.
-
-## Further releases
-
-In the next version of the code, the developer have planed to implement a more
-efficient bit reversal algorithm. A parallel version of the algorithm will also
-be considered.
 
 ## License
 The project is published under GNU General Public License version 3.
