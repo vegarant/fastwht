@@ -37,4 +37,4 @@ The project is published under GNU General Public License version 3.
 
 ## Contact
 For any questions concerning the code please contact Vegard Antun at
-vegarant@student.matnat.uio.no
+vegarant@math.uio.no

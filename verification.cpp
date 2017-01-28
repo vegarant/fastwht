@@ -17,7 +17,6 @@
 #include <iomanip>
 #include <cmath>
 #include "hadamard.h"
-#include "cycles.h"
 #include "fxt/walsh/walshseq.h"
 #include "fxt/walsh/walshpal.h"
 #include "Eigen/Dense"
