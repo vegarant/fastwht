@@ -6,8 +6,8 @@
 // see the file COPYING.txt in the main directory.
 
 
-#include "fxttypes.h"
-#include "bits/bitsperlong.h"
+#include "../fxttypes.h"
+#include "bitsperlong.h"
 
 
 static inline ulong bit_swap_01(ulong a, ulong k1, ulong k2)

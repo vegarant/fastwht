@@ -11,7 +11,7 @@
 #endif  // !defined HAVE_BITASM_H__
 #endif  // !defined FXT_NO_WARN_HDR
 
-//#include "fxttypes.h"
+//#include "../fxttypes.h"
 
 
 #ifdef HAVE_AMD64_POPCNT

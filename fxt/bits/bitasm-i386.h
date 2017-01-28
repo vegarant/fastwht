@@ -11,7 +11,7 @@
 #endif  // !defined HAVE_BITASM_H__
 #endif  // !defined FXT_NO_WARN_HDR
 
-//#include "fxttypes.h"
+//#include "../fxttypes.h"
 
 static inline ulong asm_bsf(ulong x)
 // Bit Scan Forward: return index of lowest one.

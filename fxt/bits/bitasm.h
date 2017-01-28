@@ -5,8 +5,8 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-//#include "bits/bitasm.h"  // this file
-#include "fxttypes.h"
+//#include "bitasm.h"  // this file
+#include "../fxttypes.h"
 
 #if defined  __GNUC__  // GNU compiler
 

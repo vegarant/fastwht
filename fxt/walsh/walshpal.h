@@ -5,9 +5,9 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "fxttypes.h"
-#include "perm/revbinpermute.h"
-#include "walsh/walshwak.h"  // walsh_wak()
+#include "../fxttypes.h"
+#include "../perm/revbinpermute.h"
+#include "walshwak.h"  // walsh_wak()
 
 
 template <typename Type>

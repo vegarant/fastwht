@@ -27,11 +27,11 @@ For the file interfacing with python see python/hadamard.h
 #include <complex>
 
 // FXT
-#include "bits/bit2pow.h" // ld
-#include "walsh/walshseq.h" // walsh_seq2
-#include "perm/revbinpermute.h" // revbin_permute
-#include "walsh/walshwak.h" // walsh_wak
-#include "walsh/walshwal.h" // walsh_wal
+#include "fxt/bits/bit2pow.h" // ld
+#include "fxt/walsh/walshseq.h" // walsh_seq2
+#include "fxt/perm/revbinpermute.h" // revbin_permute
+#include "fxt/walsh/walshwak.h" // walsh_wak
+#include "fxt/walsh/walshwal.h" // walsh_wal
 
 enum HadamardOrder {ORDINARY, PALEY, SEQUENCY};
 

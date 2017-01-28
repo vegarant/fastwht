@@ -6,12 +6,12 @@
 // see the file COPYING.txt in the main directory.
 
 
-#include "walsh/walshwak2.h"
-#include "walsh/walshwak4.h"
-#include "walsh/shortwalshwakdif.h"
-#include "walsh/shortwalshwakdit.h"
-#include "aux0/sumdiff.h"
-#include "fxttypes.h"
+#include "walshwak2.h"
+#include "walshwak4.h"
+#include "shortwalshwakdif.h"
+#include "shortwalshwakdit.h"
+#include "../aux0/sumdiff.h"
+#include "../fxttypes.h"
 
 
 template <typename Type>

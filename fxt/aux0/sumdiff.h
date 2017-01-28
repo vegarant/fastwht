@@ -5,7 +5,7 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-//#include "aux0/sumdiff.h"  // this file
+//#include "sumdiff.h"  // this file
 
 template <typename Type>
 static inline void sumdiff(Type &a, Type &b)

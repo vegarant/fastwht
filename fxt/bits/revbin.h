@@ -5,11 +5,11 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "bits/bitswap.h"
-#include "bits/bitsperlong.h"
-#include "bits/bitasm.h"
+#include "bitswap.h"
+#include "bitsperlong.h"
+#include "bitasm.h"
 
-#include "fxttypes.h"
+#include "../fxttypes.h"
 
 
 static inline ulong bswap(ulong x)

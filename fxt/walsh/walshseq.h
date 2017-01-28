@@ -5,10 +5,10 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "fxttypes.h"
-#include "perm/reverse.h"
-#include "perm/revbinpermute.h"
-#include "walsh/walshgray.h"
+#include "../fxttypes.h"
+#include "../perm/reverse.h"
+#include "../perm/revbinpermute.h"
+#include "walshgray.h"
 
 
 template <typename Type>

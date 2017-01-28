@@ -5,9 +5,9 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "fxttypes.h"
-#include "bits/bitsperlong.h"
-#include "bits/bitasm.h"
+#include "../fxttypes.h"
+#include "bitsperlong.h"
+#include "bitasm.h"
 
 
 static inline ulong highest_one_01edge(ulong x)

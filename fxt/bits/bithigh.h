@@ -6,12 +6,12 @@
 // see the file COPYING.txt in the main directory.
 
 
-#include "bits/bithigh-edge.h"  // highest_one_01edge()
+#include "bithigh-edge.h"  // highest_one_01edge()
 
-#include "fxttypes.h"
-#include "bits/bitsperlong.h"
-#include "bits/bitasm.h"
-#include "bits/bitldeq.h"  // ld_neq()
+#include "../fxttypes.h"
+#include "bitsperlong.h"
+#include "bitasm.h"
+#include "bitldeq.h"  // ld_neq()
 
 
 static inline ulong highest_one(ulong x)

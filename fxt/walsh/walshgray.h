@@ -5,8 +5,8 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-//#include "walsh/grsnegate.h"
-#include "fxttypes.h"
+//#include "grsnegate.h"
+#include "../fxttypes.h"
 
 
 template <typename Type>

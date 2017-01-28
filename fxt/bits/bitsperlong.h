@@ -5,7 +5,7 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-//#include "bits/bitsperlong.h"  // this file
+//#include "bitsperlong.h"  // this file
 
 #if !defined BITS_PER_LONG  // could be defined using -DBITS_PER_LONG=value
 #include <climits>

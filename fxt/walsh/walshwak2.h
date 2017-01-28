@@ -5,7 +5,7 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "fxttypes.h"
+#include "../fxttypes.h"
 
 template <typename Type>
 void walsh_wak_dif2(Type *f, ulong ldn)

@@ -6,11 +6,11 @@
 // see the file COPYING.txt in the main directory.
 
 
-#include "walsh/walshwak2.h"
-#include "walsh/walshwak4.h"
-#include "walsh/walshwak8.h"
-#include "walsh/walshwakloc2.h"
-#include "fxttypes.h"
+#include "walshwak2.h"
+#include "walshwak4.h"
+#include "walshwak8.h"
+#include "walshwakloc2.h"
+#include "../fxttypes.h"
 
 
 

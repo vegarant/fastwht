@@ -22,7 +22,7 @@ CC = mex
 CPPFLAG='-O3'
 
 fastwht.mexa64: ../hadamard.cpp ../hadamard.h fastwht.cpp  Makefile
-	$(CC) CFLAGS=$(CPPFLAG) -I../fxt/ fastwht.cpp ../hadamard.cpp
+	$(CC) CFLAGS=$(CPPFLAG)  fastwht.cpp ../hadamard.cpp
 
 .PHONY: clean
 clean:

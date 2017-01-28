@@ -5,10 +5,10 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "bits/bitsperlong.h"
-#include "bits/bitlow.h"
+#include "bitsperlong.h"
+#include "bitlow.h"
 
-#include "fxttypes.h"
+#include "../fxttypes.h"
 
 static inline ulong revbin_upd(ulong r, ulong h)
 // Let n=2**ldn and h=n/2.

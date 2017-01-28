@@ -5,9 +5,9 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "walsh/shortwalshwakdif.h"
-#include "walsh/shortwalshwakdit.h"
-#include "fxttypes.h"
+#include "shortwalshwakdif.h"
+#include "shortwalshwakdit.h"
+#include "../fxttypes.h"
 
 
 #define WALSH_DIF8_USE_FINAL_16  // define to avoid radix-2 step

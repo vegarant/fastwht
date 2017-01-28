@@ -6,8 +6,8 @@
 // see the file COPYING.txt in the main directory.
 
 
-#include "aux0/sumdiff.h"
-#include "fxttypes.h"
+#include "../aux0/sumdiff.h"
+#include "../fxttypes.h"
 
 //: walsh_wak_dit() for fixed array sizes
 

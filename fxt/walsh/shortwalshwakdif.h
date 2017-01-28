@@ -5,8 +5,8 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "aux0/sumdiff.h"
-#include "fxttypes.h"
+#include "../aux0/sumdiff.h"
+#include "../fxttypes.h"
 
 //: walsh_wak_dif() for fixed array sizes
 

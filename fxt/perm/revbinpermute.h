@@ -5,12 +5,12 @@
 // License: GNU General Public License version 3 or later,
 // see the file COPYING.txt in the main directory.
 
-#include "perm/shortrevbinpermute.h"
-#include "bits/revbin-upd.h"
-#include "bits/revbin.h"
-#include "bits/bit2pow.h"
-#include "aux0/swap.h"
-#include "fxttypes.h"
+#include "shortrevbinpermute.h"
+#include "../bits/revbin-upd.h"
+#include "../bits/revbin.h"
+#include "../bits/bit2pow.h"
+#include "../aux0/swap.h"
+#include "../fxttypes.h"
 
 
 // Tuning parameters:
