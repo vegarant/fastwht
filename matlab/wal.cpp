@@ -89,10 +89,10 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     
     // To avoid that N is truncated to N-1, due to round off errors.
     // std::round is only supported in C++11
-    N = (unsigned long) N+eps;
-    n = (unsigned long) n+eps;
-    k = (unsigned long) k+eps;
-    
+    N = (unsigned long) N_double+eps;
+    n = (unsigned long) n_double+eps;
+    k = (unsigned long) k_double+eps;
+
     if (!isPowOf2(N)) {
 	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
                            "N must be a power of 2, i.e. N = 2^x where x is positive integer");
