@@ -20,10 +20,15 @@
 
 CC = mex
 CPPFLAG='-O3'
-
-fastwht.mexa64: ../hadamard.cpp ../hadamard.h fastwht.cpp  Makefile
+main: fastwht.mexa64 wal.mexa64 verification
+	
+fastwht.mexa64: ../hadamard.cpp ../hadamard.h fastwht.cpp  
 	$(CC) CFLAGS=$(CPPFLAG)  fastwht.cpp ../hadamard.cpp
+wal.mexa64: ../hadamard.cpp ../hadamard.h wal.cpp  
+	$(CC) CFLAGS=$(CPPFLAG)  wal.cpp ../hadamard.cpp
+verification: verification.cpp multidimIdx.h multidimIdx.cpp Makefile
+	g++ -ggdb -std=c++11 multidimIdx.cpp  verification.cpp -o verification
 
 .PHONY: clean
 clean:
-	rm -f fastwht.mexa64
+	rm -f fastwht.mexa64 fastwhtn.mexa64
