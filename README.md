@@ -6,7 +6,7 @@ with bindings to Matlab and Python 2. The algorithm perform the transform
 in-place in O( N log(N) ) operations. Current version
 are order of magnitude faster than Matlab's own implementation `fwht()`. As
 Python's NumPy package does not implement this transform, no such comparison have
-been made for the Python implementation. For an thorought documentation of it's
+been made for the Python implementation. For a thorought documentation of it's
 usage we refer to Matlab's own [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).
 
 ### Matlab
