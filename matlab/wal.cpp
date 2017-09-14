@@ -118,7 +118,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     const unsigned long n_size = MAX(n_cols, n_rows);
     const unsigned long k_size = MAX(k_cols, k_rows);
     
-    std::cout << "n_size: " << n_size << ", k_size: " << k_size << std::endl;
+    //std::cout << "n_size: " << n_size << ", k_size: " << k_size << std::endl;
     
     /* Import matrix data  */
     n_double = mxGetPr(FREQ_IN);
@@ -148,8 +148,9 @@ void mexFunction( const int nlhs, mxArray *plhs[],
         k_max =  (k_double[i] > k_max) ? k_double[i] : k_max; 
         k_min =  (k_double[i] < k_min) ? k_double[i] : k_min; 
     }
-
-    bool is_in_0_1 = (k_max <= 1.0);
+    // START HERE: I need to handle the case where elements are in the inteval
+    // [0,1]
+    bool is_in_0_1 = (k_max < 1.0);
     
     if (k_max >= N_double or k_min < 0) {
 	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
@@ -161,8 +162,6 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     if( is_in_0_1) {
         for (unsigned long i = 0; i < k_size; i++) {
             k_double[i] = floor(N_double*k_double[i]);
-            k_double[i] = fabs(k_double[i] - N_double) < N_double*1e-14 
-                          ? N_double - 1 : k_double[i]; // Ensure that 1 i maped to N-1
             k_long[i] = (unsigned long)k_double[i];
         }
     } else {
@@ -183,13 +182,22 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     double * xd = mxGetPr(X_OUT);
     
     if (k_size == 1 and n_size == 1) {
+        
         int val = WAL( N, n_long[0], k_long[0] );
         xd[0] = (double) val;
-    } else if (k_size == 1) {
         
+        //std::cout << "n_size: " << n_size << ", k_size: " << k_size << std::endl;
+        //std::cout << "n_long[0]: " << n_long[0] << std::endl;
+        //std::cout << "k_long[0]: " << k_long[0] << std::endl;
+
+        //std::cout << "n_double[0]: " << n_double[0] << std::endl;
+        //std::cout << "k_double[0]: " << k_double[0] << std::endl;
+
+    } else if (k_size == 1) {
+
         double * x  = new double[N];
         zeroOut(x,N);
-        
+
         x[k_long[0]] = 1;
         hadamardTransform<double>(x, N, SEQUENCY);
 
