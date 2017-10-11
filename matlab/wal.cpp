@@ -148,8 +148,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
         k_max =  (k_double[i] > k_max) ? k_double[i] : k_max; 
         k_min =  (k_double[i] < k_min) ? k_double[i] : k_min; 
     }
-    // START HERE: I need to handle the case where elements are in the inteval
-    // [0,1]
+    
     bool is_in_0_1 = (k_max < 1.0);
     
     if (k_max >= N_double or k_min < 0) {
@@ -161,8 +160,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
 
     if( is_in_0_1) {
         for (unsigned long i = 0; i < k_size; i++) {
-            k_double[i] = floor(N_double*k_double[i]);
-            k_long[i] = (unsigned long)k_double[i];
+            k_long[i] = (unsigned long) floor(N_double*k_double[i]);
         }
     } else {
         
