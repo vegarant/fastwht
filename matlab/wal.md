@@ -11,11 +11,11 @@ y = wal(N,n,t)
 ## Description 
 ---
 y = wal(N,n,k). Here we assume N = 2^r for some positive integer r, and that 0<= n,k < N are integers.
-   The function evaluates the [WAL function](walsh_function.pdf) at 
+   The function evaluates the WAL function (see `walsh_function.pdf`) at 
     WAL(n,k/N). If n and k are vector input, it is evaluated at all the corresponding values. 
 
 y = wal(N,n,t). Here we assume N = 2^r for some positive integer r, that n is an integer in the interval `[0,N)` and that lies i the interval `[0,1)`.
-   The function evaluates the [WAL function](walsh_function.pdf) at 
+   The function evaluates the WAL function (see `walsh_function.pdf`) at 
     WAL(n,t). If n and k are vector input, it is evaluated at all the corresponding values. 
 
 ## Examples
