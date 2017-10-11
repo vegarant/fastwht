@@ -14,7 +14,7 @@ The Matlab interface supports the two functions `fastwht` and `wal`. The
 `fastwht` function is a faster version of Matlab's `fwht` function, and for its
 usage we refer to Matlab's own 
 [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).
-The [`wal` function](src/master/matlab/wal.md) is the function generating the matrix entries in a 2^n x 2^n 
+The [`wal` function](matlab/wal.md) is the function generating the matrix entries in a 2^n x 2^n 
 sequency ordered Hadamard matrix. The current version of this function is 
 vectorized, so that it can handle vector input. 
 
