@@ -88,21 +88,21 @@ void hadamardTransform2dColumn(T* x, const unsigned long M ,
     T * y = new T[N]; // Intermediate array
     
     // For each column perform the Hadamard transform
-    for (int k = 0; k < N; k++) {
+    for (unsigned int k = 0; k < N; k++) {
         hadamardTransform<T>(&x[k*M], M, order);
     }
 
     // For each row apply the Hadamard transform
-    for (int k = 0; k < M; k++) {
+    for (unsigned int k = 0; k < M; k++) {
         // Copy out the row column
-        for (int i = 0; i < N; i++) {
+        for (unsigned int i = 0; i < N; i++) {
             y[i] = x[i*M+k];
         } 
          
         hadamardTransform<T>(y, N, order);
          
         // Copy the calculated elements back in the array
-        for (int i = 0; i < N; i++) {
+        for (unsigned int i = 0; i < N; i++) {
             x[i*M+k] = y[i];
         } 
     }
@@ -189,7 +189,7 @@ t - column i.e., the input ψ_n(t/N)
 */
 int PAL(unsigned long N, unsigned long n, unsigned long x) 
 {
-    const int ldn = ld(N); 
+    const unsigned int ldn = ld(N); 
     unsigned long s = 0;
     unsigned long ONE = 1;
     unsigned long n_j = 0;
@@ -287,3 +287,68 @@ template void hadamardOrdinary<>(float* x, const unsigned long N);
 template void hadamardOrdinary<>(double* x, const unsigned long N);
 template void hadamardOrdinary<>(long double* x, const unsigned long N);
 template void hadamardOrdinary<>(std::complex<double>* x, const unsigned long N);
+
+
+void fwhtKernelSequency(int n, long *arr) 
+{
+     hadamardTransform<long>(arr, n, SEQUENCY);
+}
+
+void fwhtKernelOrdinary(int n, long *arr) 
+{
+     hadamardTransform<long>(arr, n, ORDINARY);
+}
+
+void fwhtKernelPaley(int n, long *arr) 
+{
+     hadamardTransform<long>(arr, n, PALEY);
+}
+
+// DIM 1 == n, DIM2 == m
+template <typename T>
+void fwhtKernel2dColumn(int n, int m, T *arr, const HadamardOrder order){
+    T * x_tmp = new T[n];
+    for (int j = 0; j < m; j++) {
+        for (int i = 0; i < n; i++) {
+            x_tmp[i] = arr[i*m+j];
+        }
+        
+        hadamardTransform<T>(x_tmp, n, order);            
+        
+        for (int i = 0; i < n; i++) {
+            arr[i*m+j] = x_tmp[i];
+        }
+    }
+    delete [] x_tmp;
+}
+template void fwhtKernel2dColumn<>(int n, int m, double *arr, const HadamardOrder order);
+template void fwhtKernel2dColumn<>(int n, int m, long   *arr, const HadamardOrder order);
+
+
+void fwhtKernel2dSequency(int n, int m, double *arr) {
+    fwhtKernel2dColumn<double>(n, m, arr, SEQUENCY); 
+}
+
+void fwhtKernel2dOrdinary(int n, int m, double *arr) {
+    fwhtKernel2dColumn<double>(n, m, arr, ORDINARY); 
+}
+void fwhtKernel2dPaley(int n, int m, double *arr) {
+    fwhtKernel2dColumn<double>(n, m, arr, PALEY); 
+}
+
+void fwhtKernel2dSequency(int n, int m, long *arr) {
+    fwhtKernel2dColumn<long>(n, m, arr, SEQUENCY); 
+}
+
+void fwhtKernel2dOrdinary(int n, int m, long *arr) {
+    fwhtKernel2dColumn<long>(n, m, arr, ORDINARY); 
+}
+
+void fwhtKernel2dPaley(int n, int m, long *arr) {
+    fwhtKernel2dColumn<long>(n, m, arr, PALEY); 
+}
+
+
+
+
+
