@@ -2,7 +2,7 @@
 ## A fast Walsh-Hadamard transform for Matlab and Python 2
 
 `fastwht` is an C++ implementation (using [fxt](http://www.jjj.de/fxt/)) of the
-fast Walsh-Hadamard transform with bindings to Matlab and Python 2. The
+fast Walsh-Hadamard transform with bindings to Matlab and Python. The
 algorithm perform the transform in-place in O( N log(N) ) operations. Current
 version are order of magnitude faster than Matlab's own implementation `fwht`.
 As Python's NumPy package does not implement this transform, no such comparison
@@ -26,7 +26,7 @@ function.
 ![alt text](matlab/compare_performance.png =200x150)
 
 ### Python
-The interface between C++ and Python 2 is auto generated using
+The interface between C++ and Python is auto generated using
 [Swig](http://www.swig.org) version 3.0.8. On top of this python interface,
 there have been built an extra layer of wrapper code, to support complex arrays
 and matrix objects. None of swig's auto generated code is submitted in this
