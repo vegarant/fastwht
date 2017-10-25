@@ -18,7 +18,7 @@ Hadamard is a python module providing an implementation of the Walsh-Hadamard
 transform.
 """
 from hadamardKernel import *;
-
+import sys
 import numpy as np
 
 
@@ -133,7 +133,6 @@ def fastwht(x, N=0, order='sequency'):
             N = originalLength;
             y = np.asarray(x.copy());
 
-
     # y is the correct shape and we can apply the transform
     if (len(y.shape) == 1):
         if (order == 'hadamard'):
@@ -147,8 +146,8 @@ def fastwht(x, N=0, order='sequency'):
             if (order == 'hadamard'):
                 fwhtKernel2dOrdinary(y);
             elif (order == 'sequency'):
-                print('Calling')
                 fwhtKernel2dSequency(y);
+               
             else: 
                 fwhtKernel2dPaley(y);
         else: # shape is size 2 and shape[0] == 1
@@ -160,6 +159,9 @@ def fastwht(x, N=0, order='sequency'):
             else: 
                 fwhtKernelPaley(y);
             y.shape = (1, y.shape[0]);
+    
+    if y.dtype == np.int64:
+        y = y.astype('float64');
     y /= N;
     if (N == 0 or N == originalLength):
         y.shape = originalShape;
@@ -167,6 +169,14 @@ def fastwht(x, N=0, order='sequency'):
         y = np.matrix(y);
 
     return y;
+
+
+def fastwht2(X, A=[0,0], order='sequency'):
+    if (len(A) != 2):
+        raise ValueError('A must contain two elements');
+    Y = fastwht(X, A[0], order);
+    Z = fastwht(Y.transpose(), A[1], order);
+    return Z.transpose();
 
 
 def WAL(N, n, t):
