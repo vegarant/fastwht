@@ -1,20 +1,8 @@
 #include "../hadamard.h"
 
-
-/*
-   Is `x` on the form 2^nu;
-*/
-inline bool isPowOf2(ulong x)
-{
-    return  !(x & (x-1));
-}
-
-inline void zeroOut(double * x, unsigned long N) 
-{
-    for (unsigned long i = 0; i < N; i++) {
-        x[i] = 0;
-    }
-}
+inline bool isPowOf2(ulong x);
+inline void zeroOut(double * x, unsigned long N);
+inline unsigned long upper_power_of_two(unsigned long v);
 
 
 /*
@@ -114,3 +102,33 @@ double wal_comp_core(unsigned long *n_long, unsigned long n_size,
 
 }
 
+/*
+   Is `x` on the form 2^nu;
+*/
+inline bool isPowOf2(ulong x)
+{
+    return  !(x & (x-1));
+}
+
+inline void zeroOut(double * x, unsigned long N) 
+{
+    for (unsigned long i = 0; i < N; i++) {
+        x[i] = 0;
+    }
+}
+
+inline unsigned long upper_power_of_two(unsigned long v) 
+{
+    v--;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    v |= v >> 32;
+    v++;
+    
+    v += (v == 0); // if v == 0 return 1
+    
+    return v;
+}

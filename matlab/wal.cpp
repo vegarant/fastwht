@@ -27,9 +27,9 @@
 
 /* Input Arguments */
 
-#define	N_IN	prhs[0]
-#define	FREQ_IN	prhs[1]
-#define	K_IN	prhs[2]
+//#define	N_IN	prhs[0]
+#define	FREQ_IN	prhs[0]
+#define	K_IN	prhs[1]
 
 /* Output Arguments */
 
@@ -40,8 +40,6 @@
 #endif
 
 
-inline bool isPowOf2(ulong x);
-inline void zeroOut(double * x, unsigned long N);
 
 
 /*
@@ -60,7 +58,7 @@ where 0 <= n,k < N
 void mexFunction( const int nlhs, mxArray *plhs[],
         		  const int nrhs, const mxArray *prhs[] ) {
     
-    double N_double;
+
     double * n_double;
     double * k_double;
     unsigned long n_rows, n_cols, k_rows, k_cols = 0;
@@ -70,25 +68,25 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 "Too many output arguments.");
     }
 
-    if (nrhs != 3 ) {
+    if (nrhs != 2 ) {
 	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidNumInputs",
-                "Three input arguments are required");
+                "Two input arguments are required");
     }
 
-    /* Test the input type */
-    if ( mxIsDouble(N_IN) and (!mxIsComplex(N_IN)) ) {
-        N_double = mxGetScalar(N_IN);
-    } else {
-	    mexErrMsgIdAndTxt( "MATLAB:wal:unsupportedType",
-                "N must be of data type 'double'");
-    }
+    ///* Test the input type */
+    //if ( mxIsDouble(N_IN) and (!mxIsComplex(N_IN)) ) {
+    //    N_double = mxGetScalar(N_IN);
+    //} else {
+	//    mexErrMsgIdAndTxt( "MATLAB:wal:unsupportedType",
+    //            "N must be of data type 'double'");
+    //}
 
-    unsigned long N = (unsigned long) N_double;
+    //unsigned long N = (unsigned long) N_double;
 
-    if (!isPowOf2(N)) {
-	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
-                           "N must be a power of 2, i.e. N = 2^x where x is positive integer");
-    }
+    //if (!isPowOf2(N)) {
+	//    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
+    //                       "N must be a power of 2, i.e. N = 2^x where x is positive integer");
+    //}
     
     if ( mxIsDouble(FREQ_IN) and (!mxIsComplex(FREQ_IN)) ) {
         n_rows = mxGetM(FREQ_IN);
@@ -127,7 +125,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     
     unsigned long *n_long = new unsigned long[n_size]; 
     unsigned long *k_long = new unsigned long[k_size]; 
-    
+    unsigned long n_max = 0;
     for (long i = 0; i < n_size; i++) {
 
 
@@ -137,12 +135,16 @@ void mexFunction( const int nlhs, mxArray *plhs[],
         }
         
         n_long[i] = (unsigned long) n_double[i];    
-        
+        n_max = (n_max < n_long[i]) ? n_long[i]:n_max;
     }
+    
+    unsigned long N = upper_power_of_two(n_max);    
+    
+    N = (N > 1) ? N:2;
     
     for (long i = 0; i < k_size; i++) {
         
-        k_long[i] = (unsigned long) floor(N_double*k_double[i]);
+        k_long[i] = (unsigned long) floor(N*k_double[i]);
         
         if (k_long[i] < 0 or k_long[i] >= N) {
 	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
