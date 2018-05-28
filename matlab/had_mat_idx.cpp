@@ -59,10 +59,11 @@ where 0 <= n,k < N
 */
 void mexFunction( const int nlhs, mxArray *plhs[],
         		  const int nrhs, const mxArray *prhs[] ) {
-    
+
     double N_double;
     double * n_double;
     double * k_double;
+
     unsigned long n_rows, n_cols, k_rows, k_cols = 0;
     /* Check for proper number of arguments */
     if (nlhs > 1) {
@@ -83,27 +84,28 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 "N must be of data type 'double'");
     }
 
-    unsigned long N = (unsigned long) N_double;
 
-    if (!isPowOf2(N)) {
-	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
-                           "N must be a power of 2, i.e. N = 2^x where x is positive integer");
-    }
-    
     if ( mxIsDouble(FREQ_IN) and (!mxIsComplex(FREQ_IN)) ) {
         n_rows = mxGetM(FREQ_IN);
         n_cols = mxGetN(FREQ_IN);
     } else {
 	    mexErrMsgIdAndTxt( "MATLAB:wal:unsupportedType",
-                "n must be of data type 'double'");
+                           "n must be of data type 'double'");
     }
-    
+
     if ( mxIsDouble(K_IN) and (!mxIsComplex(K_IN)) ) {
         k_rows = mxGetM(K_IN);
         k_cols = mxGetN(K_IN);
     } else {
 	    mexErrMsgIdAndTxt( "MATLAB:wal:unsupportedType",
                 "k must be of data type 'double'");
+    }
+    
+    unsigned long N = (unsigned long) N_double;
+
+    if (!isPowOf2(N)) {
+	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
+                           "N must be a power of 2, i.e. N = 2^x where x is positive integer");
     }
     
     if (k_rows != 1 and k_cols != 1) {
@@ -127,29 +129,39 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     
     unsigned long *n_long = new unsigned long[n_size]; 
     unsigned long *k_long = new unsigned long[k_size]; 
-    
+
     for (long i = 0; i < n_size; i++) {
 
+        if (n_double[i] < 0 or n_double[i] > N) {
+	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
+                               "0 < k,n <= N");
+        }
 
         if ( fabs(n_double[i]-floor(n_double[i])) > 1e-14*n_double[i] ) {
 	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
                                "Walsh frequencies n, must be integers");
         }
-        
-        n_long[i] = (unsigned long) n_double[i];    
-        
+
+        n_long[i] = (unsigned long) n_double[i]-1; // Convert from matlab to cpp indices
+
     }
-    
+
     for (long i = 0; i < k_size; i++) {
-        
-        k_long[i] = (unsigned long) floor(N_double*k_double[i]);
-        
-        if (k_long[i] < 0 or k_long[i] >= N) {
+
+        if (k_double[i] <= 0 or k_double[i] > N) {
 	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
-                               "Walsh indices k must lie in the interval [0,1)");
+                               "0 < k,n <= N");
         }
-        
+
+        if ( fabs(k_double[i]-floor(k_double[i])) > 1e-14*n_double[i] ) {
+	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
+                               "matrix indices must be integers");
+        }
+
+        k_long[i] = (unsigned long) k_double[i]-1; // Convert from matlab to cpp indices  
+
     }
+
 
     X_OUT       = mxCreateDoubleMatrix((mwSize) n_size, (mwSize) k_size, mxREAL);
 
@@ -162,6 +174,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     delete [] k_long;
 
 }
+
 
 
 

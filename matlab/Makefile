@@ -13,22 +13,33 @@
 # Copyright 2016 Vegard Antun
 #
 
+CC = mex
 
+UNAME := $(shell uname)
 
+ifeq ($(UNAME), Darwin)
+CPPFLAGS += -Ofast
+file_ending = mexa64
+endif
+
+ifeq ($(UNAME), Linux)
+CPPFLAGS += -O3
+file_ending = mexa64
+endif
 
 # Change the path of the mex compiler for this to work on most computers
 
-CC = mex
-CPPFLAG='-O3'
-main: fastwht.mexa64 wal.mexa64 verification
+main: fastwht.$(file_ending) wal.$(file_ending) had_mat_idx.$(file_ending) #verification
 	
-fastwht.mexa64: ../hadamard.cpp ../hadamard.h fastwht.cpp  
+fastwht.$(file_ending): ../hadamard.cpp ../hadamard.h fastwht.cpp  
 	$(CC) CFLAGS=$(CPPFLAG)  fastwht.cpp ../hadamard.cpp
-wal.mexa64: ../hadamard.cpp ../hadamard.h wal.cpp  
+wal.$(file_ending): ../hadamard.cpp ../hadamard.h wal_comp_core.cpp wal.cpp  
 	$(CC) CFLAGS=$(CPPFLAG)  wal.cpp ../hadamard.cpp
-verification: verification.cpp multidimIdx.h multidimIdx.cpp Makefile
-	g++ -ggdb -std=c++11 multidimIdx.cpp  verification.cpp -o verification
+had_mat_idx.$(file_ending): ../hadamard.cpp ../hadamard.h wal_comp_core.cpp had_mat_idx.cpp 
+	$(CC) CFLAGS=$(CPPFLAG)  had_mat_idx.cpp ../hadamard.cpp
+#verification: verification.cpp multidimIdx.h multidimIdx.cpp Makefile
+#	g++ -ggdb -std=c++11 multidimIdx.cpp  verification.cpp -o verification
 
 .PHONY: clean
 clean:
-	rm -f fastwht.mexa64 fastwhtn.mexa64
+	rm -f fastwht.$(file_ending) had_mat_idx.$(file_ending) wal.$(file_ending)
