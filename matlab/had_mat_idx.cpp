@@ -15,8 +15,6 @@
 //
 
 
-//                                  WARNING
-//      THIS FUNCTION IS UNDER CONSTRUCTION AND IS NOT THOROUGHLY TESTED
 
 #include "mex.h"
 #include "../hadamard.h"
@@ -46,15 +44,16 @@ inline void zeroOut(double * x, unsigned long N);
 
 /*
 
-Quick and dirty conversion from C++ to Matlab code. It is not thoroughly
-tested yet. 
-
 N = N_IN
 n = FREQ_IN
 k = K_IN
 
-wal(N,n,k) computes the value w_n(k/N) for N = 2^nu for some nu >= 0, 
-where 0 <= n,k < N
+Extract elements from a sequency ordered hadamard matrix.
+
+>> W = N*fwht(eye(N));
+>> W(n,k) % This is what the function computes
+
+n and k can be arrays.
 
 */
 void mexFunction( const int nlhs, mxArray *plhs[],

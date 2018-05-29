@@ -15,8 +15,6 @@
 //
 
 
-//                                  WARNING
-//      THIS FUNCTION IS UNDER CONSTRUCTION AND IS NOT THOROUGHLY TESTED
 
 #include "mex.h"
 #include "../hadamard.h"
@@ -27,7 +25,7 @@
 
 /* Input Arguments */
 
-//#define	N_IN	prhs[0]
+
 #define	FREQ_IN	prhs[0]
 #define	K_IN	prhs[1]
 
@@ -44,16 +42,10 @@
 
 /*
 
-Quick and dirty conversion from C++ to Matlab code. It is not thoroughly
-tested yet. 
-
-N = N_IN
 n = FREQ_IN
 k = K_IN
 
-wal(N,n,k) computes the value w_n(k/N) for N = 2^nu for some nu >= 0, 
-where 0 <= n,k < N
-
+wal(n,k) computes the value w_n(k) for n = 0,1,... and k in [0,1). 
 */
 void mexFunction( const int nlhs, mxArray *plhs[],
         		  const int nrhs, const mxArray *prhs[] ) {
@@ -72,21 +64,6 @@ void mexFunction( const int nlhs, mxArray *plhs[],
 	    mexErrMsgIdAndTxt( "MATLAB:wal:invalidNumInputs",
                 "Two input arguments are required");
     }
-
-    ///* Test the input type */
-    //if ( mxIsDouble(N_IN) and (!mxIsComplex(N_IN)) ) {
-    //    N_double = mxGetScalar(N_IN);
-    //} else {
-	//    mexErrMsgIdAndTxt( "MATLAB:wal:unsupportedType",
-    //            "N must be of data type 'double'");
-    //}
-
-    //unsigned long N = (unsigned long) N_double;
-
-    //if (!isPowOf2(N)) {
-	//    mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
-    //                       "N must be a power of 2, i.e. N = 2^x where x is positive integer");
-    //}
     
     if ( mxIsDouble(FREQ_IN) and (!mxIsComplex(FREQ_IN)) ) {
         n_rows = mxGetM(FREQ_IN);
@@ -116,8 +93,6 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     
     const unsigned long n_size = MAX(n_cols, n_rows);
     const unsigned long k_size = MAX(k_cols, k_rows);
-    
-    //std::cout << "n_size: " << n_size << ", k_size: " << k_size << std::endl;
     
     /* Import matrix data  */
     n_double = mxGetPr(FREQ_IN);
