@@ -138,7 +138,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
         n_max = (n_max < n_long[i]) ? n_long[i]:n_max;
     }
     
-    unsigned long N = upper_power_of_two(n_max);    
+    unsigned long N = upper_power_of_two(n_max+1);    
     
     N = (N > 1) ? N:2;
     
