@@ -152,8 +152,8 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                                "0 < k,n <= N");
         }
 
-        if ( fabs(k_double[i]-floor(k_double[i])) > 1e-14*n_double[i] ) {
-	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
+        if ( fabs(k_double[i]-floor(k_double[i])) > 1e-14*k_double[i] ) {
+            mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
                                "matrix indices must be integers");
         }
 
