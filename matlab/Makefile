@@ -18,12 +18,12 @@ CC = mex
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Darwin)
-CPPFLAGS += -Ofast
+CPPFLAGS += '-Ofast -fPIC'
 file_ending = mexa64
 endif
 
 ifeq ($(UNAME), Linux)
-CPPFLAGS += -O3
+CPPFLAGS += '-O3 -fPIC'
 file_ending = mexa64
 endif
 
@@ -32,11 +32,11 @@ endif
 main: fastwht.$(file_ending) wal.$(file_ending) had_mat_idx.$(file_ending) #verification
 	
 fastwht.$(file_ending): ../hadamard.cpp ../hadamard.h fastwht.cpp  
-	$(CC) CFLAGS=$(CPPFLAG)  fastwht.cpp ../hadamard.cpp
+	$(CC) CFLAGS=$(CPPFLAGS)  fastwht.cpp ../hadamard.cpp
 wal.$(file_ending): ../hadamard.cpp ../hadamard.h wal_comp_core.cpp wal.cpp  
-	$(CC) CFLAGS=$(CPPFLAG)  wal.cpp ../hadamard.cpp
+	$(CC) CFLAGS=$(CPPFLAGS)  wal.cpp ../hadamard.cpp
 had_mat_idx.$(file_ending): ../hadamard.cpp ../hadamard.h wal_comp_core.cpp had_mat_idx.cpp 
-	$(CC) CFLAGS=$(CPPFLAG)  had_mat_idx.cpp ../hadamard.cpp
+	$(CC) CFLAGS=$(CPPFLAGS)  had_mat_idx.cpp ../hadamard.cpp
 #verification: verification.cpp multidimIdx.h multidimIdx.cpp Makefile
 #	g++ -ggdb -std=c++11 multidimIdx.cpp  verification.cpp -o verification
 
