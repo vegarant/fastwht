@@ -13,6 +13,10 @@
 # Copyright 2016 Vegard Antun
 #
 
+
+# Note that on many linux distributions the `mex` command will give you a
+# version of `pdflatex`. If this is the case you find the corrcet compiler at 
+# matlabroot/bin/mex
 CC = mex
 
 UNAME := $(shell uname)
