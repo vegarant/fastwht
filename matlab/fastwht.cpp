@@ -76,7 +76,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 "Too many output arguments.");
     }
 
-    if (0 == nrhs or nrhs > 3 ) {
+    if (0 == nrhs || nrhs > 3 ) {
 	    mexErrMsgIdAndTxt( "MATLAB:fastwht:invalidNumInputs",
                 "one, two, or three input arguments are required");
     }
@@ -87,7 +87,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     unsigned long N = N_data;
     
     /* Test the input type */
-    if ( mxIsDouble(X_IN) and (!mxIsComplex(X_IN)) ) {
+    if ( mxIsDouble(X_IN) && (!mxIsComplex(X_IN)) ) {
         dataType = DOUBLE;
     } else if ( mxIsComplex(X_IN) ) {
         dataType = COMPLEX;
@@ -120,7 +120,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                     M = mxGetScalar(LENGTH_IN);
                     N = N_data;
                 }
-                if ((! isPowOf2(M)) or (! isPowOf2(N)) ) {
+                if ((! isPowOf2(M)) || (! isPowOf2(N)) ) {
                     mexErrMsgIdAndTxt("MyToolbox:fastwht:notPowerOf2",
                   "Input must be a non-negative integer which is a power of 2");
                 }
@@ -134,7 +134,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
             }
             case 2:
             {
-                if ( !mxIsDouble(LENGTH_IN) or mxIsComplex(LENGTH_IN) ) {
+                if ( !mxIsDouble(LENGTH_IN) || mxIsComplex(LENGTH_IN) ) {
                     mexErrMsgIdAndTxt("MyToolbox:fastwht:notDouble",
                                       "Input length must be type double.");
                 }
@@ -143,7 +143,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 M = (long) pLengthIn[0];
                 N = (long) pLengthIn[1];
                 
-                if ((! isPowOf2(M)) or (! isPowOf2(N)) ) {
+                if ((! isPowOf2(M)) || (! isPowOf2(N)) ) {
                     mexErrMsgIdAndTxt("MyToolbox:fastwht:notPowerOf2",
                   "Input must be a non-negative integer which is a power of 2");
                 }
@@ -272,7 +272,7 @@ void copyData(double * x, const double *data, const unsigned long M_data,
 void hadamardTransformColumnWise(double* x, const unsigned long M, const unsigned long N, 
                                           const HadamardOrder order) 
 {
-    if (M == 1 or N == 1) {
+    if (M == 1 || N == 1) {
         const unsigned long G = (M > N) ? M : N;
         hadamardTransform<double>(x, G, order);
     } else {

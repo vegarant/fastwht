@@ -76,7 +76,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     }
 
     /* Test the input type */
-    if ( mxIsDouble(N_IN) and (!mxIsComplex(N_IN)) ) {
+    if ( mxIsDouble(N_IN) && (!mxIsComplex(N_IN)) ) {
         N_double = mxGetScalar(N_IN);
     } else {
 	    mexErrMsgIdAndTxt( "MATLAB:wal:unsupportedType",
@@ -84,7 +84,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
     }
 
 
-    if ( mxIsDouble(FREQ_IN) and (!mxIsComplex(FREQ_IN)) ) {
+    if ( mxIsDouble(FREQ_IN) && (!mxIsComplex(FREQ_IN)) ) {
         n_rows = mxGetM(FREQ_IN);
         n_cols = mxGetN(FREQ_IN);
     } else {
@@ -92,7 +92,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                            "n must be of data type 'double'");
     }
 
-    if ( mxIsDouble(K_IN) and (!mxIsComplex(K_IN)) ) {
+    if ( mxIsDouble(K_IN) && (!mxIsComplex(K_IN)) ) {
         k_rows = mxGetM(K_IN);
         k_cols = mxGetN(K_IN);
     } else {
@@ -107,12 +107,12 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                            "N must be a power of 2, i.e. N = 2^x where x is positive integer");
     }
     
-    if (k_rows != 1 and k_cols != 1) {
+    if (k_rows != 1 && k_cols != 1) {
             mexErrMsgIdAndTxt( "MATLAB:fastwht:inputNotVector",
                                "Input must be a vector.");
     }
     
-    if (n_rows != 1 and n_cols != 1) {
+    if (n_rows != 1 && n_cols != 1) {
             mexErrMsgIdAndTxt( "MATLAB:fastwht:inputNotVector",
                                "Input must be a vector.");
     }
@@ -131,7 +131,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
 
     for (long i = 0; i < n_size; i++) {
 
-        if (n_double[i] < 0 or n_double[i] > N) {
+        if (n_double[i] < 0 || n_double[i] > N) {
 	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
                                "0 < k,n <= N");
         }
@@ -147,7 +147,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
 
     for (long i = 0; i < k_size; i++) {
 
-        if (k_double[i] <= 0 or k_double[i] > N) {
+        if (k_double[i] <= 0 || k_double[i] > N) {
 	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
                                "0 < k,n <= N");
         }

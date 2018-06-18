@@ -27,7 +27,7 @@ double wal_comp_core(unsigned long *n_long, unsigned long n_size,
                      unsigned long *k_long, unsigned long k_size,
                      double * xd, unsigned long N, HadamardOrder order=SEQUENCY) 
 {
-    if (k_size == 1 and n_size == 1) {
+    if (k_size == 1 && n_size == 1) {
         
         int val = WAL( N, n_long[0], k_long[0] );
         xd[0] = (double) val;

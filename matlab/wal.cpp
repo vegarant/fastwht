@@ -65,7 +65,8 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 "Two input arguments are required");
     }
     
-    if ( mxIsDouble(FREQ_IN) and (!mxIsComplex(FREQ_IN)) ) {
+    if ( mxIsDouble(FREQ_IN) && (!mxIsComplex(FREQ_IN)) ) {
+
         n_rows = mxGetM(FREQ_IN);
         n_cols = mxGetN(FREQ_IN);
     } else {
@@ -73,7 +74,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 "n must be of data type 'double'");
     }
     
-    if ( mxIsDouble(K_IN) and (!mxIsComplex(K_IN)) ) {
+    if ( mxIsDouble(K_IN) && (!mxIsComplex(K_IN)) ) {
         k_rows = mxGetM(K_IN);
         k_cols = mxGetN(K_IN);
     } else {
@@ -81,12 +82,12 @@ void mexFunction( const int nlhs, mxArray *plhs[],
                 "k must be of data type 'double'");
     }
     
-    if (k_rows != 1 and k_cols != 1) {
+    if (k_rows != 1 && k_cols != 1) {
             mexErrMsgIdAndTxt( "MATLAB:fastwht:inputNotVector",
                                "Input must be a vector.");
     }
     
-    if (n_rows != 1 and n_cols != 1) {
+    if (n_rows != 1 && n_cols != 1) {
             mexErrMsgIdAndTxt( "MATLAB:fastwht:inputNotVector",
                                "Input must be a vector.");
     }
@@ -121,7 +122,7 @@ void mexFunction( const int nlhs, mxArray *plhs[],
         
         k_long[i] = (unsigned long) floor(N*k_double[i]);
         
-        if (k_long[i] < 0 or k_long[i] >= N) {
+        if (k_long[i] < 0 || k_long[i] >= N) {
 	        mexErrMsgIdAndTxt( "MATLAB:wal:invalidInputArgument",
                                "Walsh indices k must lie in the interval [0,1)");
         }
