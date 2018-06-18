@@ -23,7 +23,7 @@ matrix values into the pointer xd.
 :return: Nothing
 
 */
-double wal_comp_core(unsigned long *n_long, unsigned long n_size, 
+void wal_comp_core(unsigned long *n_long, unsigned long n_size, 
                      unsigned long *k_long, unsigned long k_size,
                      double * xd, unsigned long N, HadamardOrder order=SEQUENCY) 
 {
