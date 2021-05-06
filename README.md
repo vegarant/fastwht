@@ -7,7 +7,8 @@
 
 The Matlab interface supports the two functions `fastwht` and `wal`. The `fastwht` function is a faster version of Matlab's `fwht` function, and for its usage, we refer to Matlab's own [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).  The [`wal` function](matlab/wal.md) is the function generating the matrix entries in a 2^n x 2^n sequency ordered Hadamard matrix. The current version of this function is vectorized so that it can handle vector input. 
 
-A test of performance for the `fastwht` function can be seen in the image below. The test were performed on an Lenovo ThinkPad T440s with Intel Core i7-4600U CPU and 8 GB of RAM. The computer was using the operating system Arch Linux. The time measurements were performed using Matlab's `timeit()` function.  ![alt text](matlab/compare_performance.png =200x150)
+A test of performance for the `fastwht` function can be seen in the image below. The test were performed on an Lenovo ThinkPad T440s with Intel Core i7-4600U CPU and 8 GB of RAM. The computer was using the operating system Arch Linux. The time measurements were performed using Matlab's `timeit()` function.  
+<img src="matlab/compare_performance.png" width="500">
 
 ### Python
 The interface between C++ and Python is auto-generated using [Swig](http://www.swig.org) version 3.0.8. On top of this python interface, there has been built an extra layer of wrapper code to support complex arrays and matrix objects. None of swig's auto-generated code is submitted in this repository.
