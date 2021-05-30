@@ -1,31 +1,33 @@
 # Fastwht
-## A fast Walsh-Hadamard transform for Matlab and Python 2
+## A fast Walsh-Hadamard transform for MATLAB and Python
 
-`fastwht` is a C++ implementation (using [fxt](http://www.jjj.de/fxt/)) of the fast Walsh-Hadamard transform with bindings to Matlab and Python. The algorithm performs the transform in place in O( N log(N) ) operations. The current version is order of magnitude faster than Matlab's own implementation `fwht`.  As Python's Numpy and Scipy package does not implement this transform, no such comparison has been made for the Python implementation. 
+`fastwht` is a C++ implementation (using [fxt](http://www.jjj.de/fxt/)) of the fast Walsh-Hadamard transform with bindings to MATLAB and Python. The algorithm performs the transform in place in O( N log(N) ) operations. The current version is order of magnitude faster than MATLAB's own implementation `fwht`.  As Python's Numpy and Scipy packages do not implement this transform, no such comparison has been made for the Python implementation. 
 
-### Matlab
+### MATLAB
 
-The Matlab interface supports the two functions `fastwht` and `wal`. The `fastwht` function is a faster version of Matlab's `fwht` function, and for its usage, we refer to Matlab's own [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).  The [`wal` function](matlab/wal.md) is the function generating the matrix entries in a 2^n x 2^n sequency ordered Hadamard matrix. The current version of this function is vectorized so that it can handle vector input. 
+The MATLAB interface supports the two functions `fastwht` and `had_mat_idx`. The `fastwht` function is a faster version of MATLAB's `fwht` function, and for its usage, we refer to MATLAB's own [documentation](http://se.mathworks.com/help/signal/ref/fwht.html).  The [`had_mat_idx` function](matlab/had_mat_idx.m) is a function generating requested entries in a 2^n x 2^n sequency ordered Hadamard matrix. This function is very convenient to use when you want to evaluate a Walsh function at a single or a few dyadic grid points. This can be done by using the relation between Walsh functions and Hadamard matrices.
 
-A test of performance for the `fastwht` function can be seen in the image below. The test were performed on an Lenovo ThinkPad T440s with Intel Core i7-4600U CPU and 8 GB of RAM. The computer was using the operating system Arch Linux. The time measurements were performed using Matlab's `timeit()` function.  
+Below you find a test of performance between the `fastwht` function found in this repository and MATLAB's `fwht` and `fft` functions. As you can see from the figure, the function performs on par with the `fft` function, while it is order of magnitude faster than MATLAB's own implementation. 
 <img src="matlab/compare_performance.png" width="500">
 
 ### Python
 The interface between C++ and Python is auto-generated using [Swig](http://www.swig.org) version 3.0.8. On top of this python interface, there has been built an extra layer of wrapper code to support complex arrays and matrix objects. None of swig's auto-generated code is submitted in this repository.
 
-In addition to the `fastwht` function, one fins the `WAL` and `PAL` functions, but these have not yet been extended to support vectorized input. 
-
 ## Install
 You may pull the required code directly from this repository and compile it yourself, or you can download these precompiled binaries:
-[Matlab](http://folk.uio.no/vegarant/fastwht_matlab.zip) and
+[MATLAB](http://folk.uio.no/vegarant/fastwht_matlab.zip) and
 [Python](http://folk.uio.no/vegarant/fastwht_python.zip).
-Remember to update your Python and Matlab path after you have compiled the code. The current release has only been tested on one machine running Arch Linux.
+Remember to update your Python and MATLAB path after you have compiled the code. The current release has mostly been tested on Linux machines.
+
+### Parallel computations
+If the `fastwht` function receives a matrix input, it applies the fast Walsh-Hadamard transform to each column in the matrix. This operation can be performed in parallel. If you have access to a mex compiler (with openMP), this part of the code can be easily parallelised (in the MATLAB version) by uncommenting the lines 22, 282-284 and 289. To compile the code with openMP use the mex compiler with the following flags. 
+```
+# From within the matlab subdirectory
+mex CFLAGS='-O2 -fPIC -fopenmp' LDFLAGS='-fopenmp'  fastwht.cpp ../hadamard.cpp
+``` 
 
 ## License
 The project is published under GNU General Public License version 3.
 
 ## Contact
 For any questions concerning the code, please contact Vegard Antun at vegarant@math.uio.no
-
-
-
