@@ -17,17 +17,24 @@
 # Note that on many linux distributions the `mex` command will give you a
 # version of `pdflatex`. If this is the case you find the corrcet compiler at 
 # matlabroot/bin/mex
-CC = mex
+CC = mex 
+#CC = /opt/app-sync/matlab/bin/mex
 
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Darwin)
-CPPFLAGS += '-Ofast -fPIC'
-file_ending = mexa64
+CPPFLAGS = '-Ofast -fPIC'
+LDFLAGS=""
+file_ending = mexmaci64
 endif
 
 ifeq ($(UNAME), Linux)
-CPPFLAGS += '-O3 -fPIC'
+CPPFLAGS = '-O3 -fPIC'
+#LDFLAGS=''
+
+# Compile with openMP instead
+#CPPFLAGS = '-O3 -fPIC -fopenmp'
+#LDFLAGS='-fopenmp'
 file_ending = mexa64
 endif
 
@@ -36,14 +43,10 @@ endif
 main: fastwht.$(file_ending) wal.$(file_ending) had_mat_idx.$(file_ending) #verification
 	
 fastwht.$(file_ending): ../hadamard.cpp ../hadamard.h fastwht.cpp  
-	$(CC) CFLAGS=$(CPPFLAGS)  fastwht.cpp ../hadamard.cpp
-wal.$(file_ending): ../hadamard.cpp ../hadamard.h wal_comp_core.cpp wal.cpp  
-	$(CC) CFLAGS=$(CPPFLAGS)  wal.cpp ../hadamard.cpp
+	$(CC) CFLAGS=$(CPPFLAGS) LDFLAGS=$(LDFLAGS)  fastwht.cpp ../hadamard.cpp
 had_mat_idx.$(file_ending): ../hadamard.cpp ../hadamard.h wal_comp_core.cpp had_mat_idx.cpp 
 	$(CC) CFLAGS=$(CPPFLAGS)  had_mat_idx.cpp ../hadamard.cpp
-#verification: verification.cpp multidimIdx.h multidimIdx.cpp Makefile
-#	g++ -ggdb -std=c++11 multidimIdx.cpp  verification.cpp -o verification
 
 .PHONY: clean
 clean:
-	rm -f fastwht.$(file_ending) had_mat_idx.$(file_ending) wal.$(file_ending)
+	rm -f fastwht.$(file_ending) had_mat_idx.$(file_ending) 
