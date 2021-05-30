@@ -18,6 +18,8 @@
 #include <iostream>
 #include <cstring>
 #include <complex>
+// Uncomment the line below as well as the lines in the function hadamardTransformColumnWise to enable openMP (remember to compile correctly).
+//#include <omp.h>
 
 /* Input Arguments */
 
@@ -276,9 +278,15 @@ void hadamardTransformColumnWise(double* x, const unsigned long M, const unsigne
         const unsigned long G = (M > N) ? M : N;
         hadamardTransform<double>(x, G, order);
     } else {
+// Uncomment these lines to use OpenMP
+//        #pragma omp parallel
+//        {
+//        #pragma omp for
         for (int i = 0; i < N; i++) {
+            
             hadamardTransform<double>(&x[i*M], M, order);
         }
+//        }
     }
 }
 
