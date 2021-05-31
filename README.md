@@ -15,8 +15,8 @@ The interface between C++ and Python is auto-generated using [Swig](http://www.s
 
 ## Install
 You may pull the required code directly from this repository and compile it yourself, or you can download these precompiled binaries:
-[MATLAB](http://folk.uio.no/vegarant/fastwht_matlab.zip) and
-[Python](http://folk.uio.no/vegarant/fastwht_python.zip).
+[MATLAB](https://www.mn.uio.no/math/english/people/aca/vegarant/fastwht_matlab.zip) and
+[Python](https://www.mn.uio.no/math/english/people/aca/vegarant/fastwht_python.zip).
 Remember to update your Python and MATLAB path after you have compiled the code. The current release has mostly been tested on Linux machines.
 
 ### Parallel computations
